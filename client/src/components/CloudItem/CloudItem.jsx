@@ -23,14 +23,17 @@ class CloudItem extends Component {
       const filename = response.headers
           .get("content-disposition")
           .split('"')[1];
-      const blob = new Blob([response.data], { type: type, encoding: 'UTF-8' });
-      //const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.download = filename; // Here I want to get rid of hardcoded value instead I want filename from server
-      link.click();
-      link.remove(); //  Probably needed to remove html element after downloading?
+      const blob = response.blob().then(blob=>{
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename; // Here I want to get rid of hardcoded value instead I want filename from server
+        link.click();
+        link.remove(); //  Probably needed to remove html element after downloading?
+      })
     });
+
 
     event.preventDefault()
   }
@@ -40,7 +43,7 @@ class CloudItem extends Component {
 
     return (
       <div>
-          <Link href={`/download/${this.props.item}`} onClick={this.preventDefault}>
+          <Link onClick={this.preventDefault}>
             {this.props.item}
           </Link>
       </div>
