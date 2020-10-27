@@ -10,6 +10,7 @@ class CloudItemsMenu extends Component {
             items:[]
         }
         this.fetchAll=this.fetchAll.bind(this)
+        this.fetch=this.fetch.bind(this)
     }
 
     async componentDidMount(){
@@ -19,18 +20,24 @@ class CloudItemsMenu extends Component {
     componentWillUnmount(){
         this.isUnmounted=true;
     }
-    async fetchAll(){
+    async fetch(){
         const res = await fetch("/content")
         const data =await res.json()
-        console.log(data)
-        if(this.isUnmounted){
-            return;
-        }
-        else{
+        return data
+    }
+    async fetchAll(){
+        this.fetch().then(data=>{
 
-            this.setState({items:data})
-            console.log(this.state.items)
-        }
+            console.log(data)
+            if(this.isUnmounted){
+                return;
+            }
+            else{
+    
+                this.setState({items:data})
+                console.log(this.state.items)
+            }
+        })
 
     }
 
