@@ -21,7 +21,7 @@ class CloudItemsMenu extends Component {
         this.isUnmounted=true;
     }
     async fetch(){
-        const res = await fetch("/content")
+        const res = await fetch(`${this.props.ip}/content`)
         const data =await res.json()
         return data
     }

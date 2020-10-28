@@ -4,6 +4,16 @@ import {Main,CloudItemsMenu, Nav} from "./containers"
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {ip: ''};
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event){
+    this.setState({ip:event.target.value})
+  }
 
   render(){
 
@@ -11,8 +21,9 @@ class App extends Component {
       <div>
         <Router>
           <Nav/>
+          <input type="text" value={this.state.ip} onChange={this.handleChange} />
           <Route exact path="/" component={Main} />
-          <Route exact path="/clouditems" component={CloudItemsMenu} />
+          <Route exact path="/clouditems"  children={<CloudItemsMenu ip={this.state.ip}/>} />
         </Router>
       </div>
     );
