@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import {  HashRouter, Route } from 'react-router-dom'
+import {Router} from 'react-router'
 import {Main,CloudItemsMenu, Nav} from "./containers"
 
 
@@ -9,11 +10,11 @@ class App extends Component {
 
     return (
       <div>
-        <Router>
+        <HashRouter>
           <Nav/>
           <Route exact path="/" component={Main} />
           <Route exact path="/clouditems" component={CloudItemsMenu} />
-        </Router>
+        </HashRouter>
       </div>
     );
   }

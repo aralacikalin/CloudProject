@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import {CloudItem} from '../../components';
 
@@ -21,7 +22,8 @@ class CloudItemsMenu extends Component {
         this.isUnmounted=true;
     }
     async fetch(){
-        const res = await fetch("/content")
+        
+        const res = await fetch("http://192.168.1.30:4000/content")
         const data =await res.json()
         return data
     }
