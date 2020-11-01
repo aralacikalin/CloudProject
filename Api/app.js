@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var donwloadRouter = require('./routes/download');
 var uploadRouter = require('./routes/upload');
 var contentRouter = require('./routes/content');
+var userInfoRouter = require('./routes/userinfo');
 
 var app = express();
 var cors=require("cors")
@@ -18,7 +19,11 @@ var cors=require("cors")
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(cors())
+var corsOptions = {
+  origin: 'http://localhost:3000',
+}
+
+app.use(cors(corsOptions))
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -32,6 +37,7 @@ app.use('/users', usersRouter);
 app.use('/download', donwloadRouter);
 app.use('/upload', uploadRouter);
 app.use('/content', contentRouter);
+app.use('/userinfo', userInfoRouter);
 
 
 
