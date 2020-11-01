@@ -35,7 +35,8 @@ class LoginScreen extends Component {
                 "email":this.state.username,
                 "password":this.state.password
             }
-            fetch(apiBaseUrl,{method:"post",body:payload}).then(async response => {
+            //!!!burda da body gönderirken ilk stringify yapmak gerekiyo gönderilen payloadu
+            fetch(apiBaseUrl,{method:"post",headers:{"Content-Type": "application/json"},body:JSON.stringify(payload),}).then(async response => {
                 const data = await response.json();
                 console.log(data.flag);
                 // check for error response
