@@ -8,7 +8,7 @@ router.post('/', function(req, res, next) {
     {
         return res.status(200).send({"flag":true}) 
     } else {
-        return res.status(200).send({"flag":false}) //!!!burda ikiside true gonderiyomuş :D
+        return res.status(200).send({"flag":false})
     }
 });
 
