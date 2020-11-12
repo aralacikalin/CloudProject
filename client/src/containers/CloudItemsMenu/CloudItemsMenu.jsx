@@ -22,8 +22,11 @@ class CloudItemsMenu extends Component {
     }
     async fetch(){
         const res = await fetch("/content")
-        const data =await res.json()
-        return data
+        if(res.ok){
+            const data =await res.json()
+            return data
+        }
+        return undefined
     }
     async fetchAll(){
         this.fetch().then(data=>{
@@ -47,7 +50,7 @@ class CloudItemsMenu extends Component {
         return (
             <div>
                 CLOUD ITEMS
-                {this.state.items.map((val,i)=>(<CloudItem key={i} item={val} />))}
+                {this.state.items && this.state.items.map((val,i)=>(<CloudItem key={i} item={val} />))}
             </div>
         );
     }
