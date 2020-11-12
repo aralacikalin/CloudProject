@@ -20,7 +20,16 @@ function authorize(roles = []) {
         (req,res,next)=>{
             const token =req.cookies.jwt
             console.log(token)
+            try{
+                jwt.verify(token,secret)
+                
+            }
+            catch(e){
+                
+                return res.status(401).json({message:"No Token!"})
+            }
             const user=jwt.verify(token,secret)
+
             if(roles.length&&!roles.includes(user.role)){
                 return res.status(401).json({ message: 'Unauthorized' });
 
