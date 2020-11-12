@@ -10,6 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,7 +22,8 @@ class LoginScreen extends Component {
     this.state = {
       username: '',
       password: '',
-      open: false
+      open: false,
+      isLoggedin:false
     }
   }
 
@@ -39,15 +41,10 @@ class LoginScreen extends Component {
       const data = await response.json();
       console.log(data.flag);
       if (!response.ok) {
-        const error = (data && data.message) || response.statusText;
-        return Promise.reject(error);
+        this.setState({ open: true })
       } else {
-        if (!data.flag) {
-          this.setState({ open: true })
-        }
-        else {
-            //TODO Change the view
-        }
+        //TODO Change the view
+        this.setState({isLoggedin:true})
       }
 
       this.setState({ totalReactPackages: data.total })
@@ -65,6 +62,7 @@ class LoginScreen extends Component {
   render() {
     return (
       <div>
+        {this.state.isLoggedin?(<Redirect to="/" />):(null)}
         <MuiThemeProvider>
           <div>
             <AppBar
