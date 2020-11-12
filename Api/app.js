@@ -11,6 +11,7 @@ var donwloadRouter = require('./routes/download');
 var uploadRouter = require('./routes/upload');
 var contentRouter = require('./routes/content');
 var userInfoRouter = require('./routes/userinfo');
+var authentication = require('./Autherization/users.controller');
 
 var app = express();
 var cors=require("cors")
@@ -21,6 +22,7 @@ app.set('view engine', 'jade');
 
 var corsOptions = {
   origin: 'http://localhost:3000',
+  credentials: true
 }
 
 app.use(cors(corsOptions))
@@ -39,6 +41,7 @@ app.use('/upload', uploadRouter);
 app.use('/content', contentRouter);
 app.use('/userinfo', userInfoRouter);
 
+app.use('/login', authentication);
 
 
 // catch 404 and forward to error handler

@@ -29,13 +29,13 @@ class LoginScreen extends Component {
     this.setState({ open: false })
   };
   async handleClick(event) {
-    var apiBaseUrl = "http://localhost:4000/userinfo";
+    var apiBaseUrl = "http://localhost:4000/login/authenticate";
     var self = this;
     var payload = {
-      "email": this.state.username,
-      "password": this.state.password
+      username: this.state.username,
+      password: this.state.password
     }
-    fetch(apiBaseUrl, { method: "post", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), }).then(async response => {
+    fetch(apiBaseUrl, { method: "POST", credentials: 'include', headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), }).then(async response => {
       const data = await response.json();
       console.log(data.flag);
       if (!response.ok) {
@@ -56,6 +56,10 @@ class LoginScreen extends Component {
         this.setState({ errorMessage: error.toString() });
         console.error('There was an error!', error);
       });
+  }
+
+  async handleTest(){
+    await fetch("http://localhost:4000/login",{credentials: 'include'})
   }
 
   render() {
@@ -80,6 +84,7 @@ class LoginScreen extends Component {
             />
             <br />
             <RaisedButton label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)} />
+            <RaisedButton label="test" primary={true} style={style} onClick={(event) => this.handleTest()} />
             <Dialog
               open={this.state.open}
               TransitionComponent={Transition}
