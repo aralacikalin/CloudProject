@@ -24,7 +24,7 @@ class Main extends Component {
     data.append("file",this.state.uploadedFile)
 
     console.log(data)
-    await axios.post("http://localhost:4000/upload",data)
+    await fetch("http://localhost:4000/upload",{method:"POST",body:data,credentials: 'include'})
   }
   render(){
 

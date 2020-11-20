@@ -3,6 +3,9 @@ var router = express.Router();
 var multer = require('multer')
 var path = require('path')
 
+var authorize =require("../_helpers/authorize");
+var Role =require("../_helpers/role");
+
 
 
 
@@ -18,7 +21,7 @@ var storage = multer.diskStorage({
 
 
 var upload = multer({ storage: storage });
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/',authorize(Role.Admin)  , upload.single('file'), (req, res) => {
     return res.status(200).send(req.file)
 });
 
