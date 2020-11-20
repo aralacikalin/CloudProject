@@ -13,6 +13,7 @@ var uploadRouter = require('./routes/upload');
 var contentRouter = require('./routes/content');
 var userInfoRouter = require('./routes/userinfo');
 var authentication = require('./Autherization/users.controller');
+var urlDownloadRouter = require('./routes/urlDownload');
 
 var app = express();
 var cors=require("cors")
@@ -41,6 +42,7 @@ app.use('/download', donwloadRouter);
 app.use('/upload', uploadRouter);
 app.use('/content', contentRouter);
 app.use('/userinfo', userInfoRouter);
+app.use('/url', urlDownloadRouter);
 
 app.use('/login', authentication);
 
