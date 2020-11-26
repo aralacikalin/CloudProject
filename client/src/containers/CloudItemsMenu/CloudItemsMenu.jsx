@@ -63,18 +63,27 @@ class CloudItemsMenu extends Component {
     componentWillUnmount(){
         this.isUnmounted=true;
     }
-    async fetchAll(){
+    async fetch(){
         const res = await fetch("/content")
-        const data =await res.json()
-        console.log(data)
-        if(this.isUnmounted){
-            return;
+        if(res.ok){
+            const data =await res.json()
+            return data
         }
-        else{
+        return undefined
+    }
+    async fetchAll(){
+        this.fetch().then(data=>{
 
-            this.setState({items:data})
-            console.log(this.state.items)
-        }
+            console.log(data)
+            if(this.isUnmounted){
+                return;
+            }
+            else{
+    
+                this.setState({items:data})
+                console.log(this.state.items)
+            }
+        })
 
     }
 
