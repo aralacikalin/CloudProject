@@ -89,7 +89,7 @@ class CloudItem extends Component {
         <CardMedia
           className={this.classes.cardMedia}
           component="img"
-          src={`http://localhost:4000/cloudcontents/${this.props.item}`}
+          src={`/cloudcontents/${this.props.item}`}
           title={this.props.item}
         />
         <CardContent className={this.classes.cardContent}>
