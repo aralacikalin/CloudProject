@@ -31,7 +31,7 @@ class LoginScreen extends Component {
     this.setState({ open: false })
   };
   async handleClick(event) {
-    var apiBaseUrl = "http://localhost:4000/login/authenticate";
+    var apiBaseUrl = "/login/authenticate";
     var self = this;
     var payload = {
       username: this.state.username,
