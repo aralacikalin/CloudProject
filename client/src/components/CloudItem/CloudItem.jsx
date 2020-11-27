@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import { Link } from 'react-router-dom';
 
 
 class CloudItem extends Component {
@@ -17,6 +19,7 @@ class CloudItem extends Component {
     this.useStyles=this.useStyles.bind(this)
 
     this.renderCardMedia=this.renderCardMedia.bind(this)
+    this.handleFile=this.handleFile.bind(this)
 
     this.state={
       url:"",
@@ -110,6 +113,10 @@ class CloudItem extends Component {
   }
   
 
+  handleFile(){
+    
+  }
+
 
   renderCardMedia(){
     if(this.state.fileType=="img"){
@@ -156,11 +163,14 @@ class CloudItem extends Component {
         </CardContent>
         <CardActions>
           <Button size="small" color="primary" onClick={this.preventDefault}>
-            Download
+            <GetAppIcon/>
           </Button>
-          <Button size="small" color="primary">
-            Edit
-          </Button>
+          <a style={{textDecoration:"none"}} target="_blank" href={this.state.url}>
+            <Button size="small" color="primary">
+              See File
+            </Button>
+
+          </a>
         </CardActions>
       </Card>
     );
