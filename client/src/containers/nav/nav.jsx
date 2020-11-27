@@ -4,6 +4,8 @@ import { Redirect } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { Button } from '@material-ui/core';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
 
 class Nav extends Component {
 
@@ -52,10 +54,12 @@ class Nav extends Component {
                 indicatorColor="primary"
                 textColor="primary"
                 onChange={this.handleChange}
-                aria-label="disabled tabs example"
+                scrollButtons="on"
+                variant="scrollable"
             >
             <Tab label="Main" />
             <Tab label="Cloud" />
+            <Button style={{marginLeft:"auto"}} onClick={this.props.themeController} ><Brightness7Icon/> </Button>
             </Tabs>
             {this.handleRedirect()}
         </Paper>
