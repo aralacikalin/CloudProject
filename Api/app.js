@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var authorize =require("./_helpers/authorize");
+var Role =require("./_helpers/role");
+
 
 
 var indexRouter = require('./routes/index');
@@ -34,7 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/cloudcontents",express.static("./CloudContents"))
+app.use("/cloudcontents",authorize(Role.Admin),express.static("./CloudContents"))
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/download', donwloadRouter);

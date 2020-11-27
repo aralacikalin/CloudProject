@@ -15,7 +15,15 @@ class CloudItem extends Component {
     this.preventDefault=this.preventDefault.bind(this)
     this.classes=this.classes.bind(this)
     this.useStyles=this.useStyles.bind(this)
+
+    this.renderCardMedia=this.renderCardMedia.bind(this)
+
+    this.state={
+      url:"",
+      fileType:""
+    }
   }
+
   useStyles = ()=> makeStyles((theme) => ({
     icon: {
       marginRight: theme.spacing(2),
@@ -36,6 +44,11 @@ class CloudItem extends Component {
       display: 'flex',
       flexDirection: 'column',
     },
+    cardMediaNonImg:{
+      overflow:"hidden !important" ,
+      paddingTop: '56.25%', // 16:9
+    },
+
     cardMedia: {
       paddingTop: '56.25%', // 16:9
     },
@@ -48,6 +61,23 @@ class CloudItem extends Component {
     },
   }));
   classes =()=> this.useStyles();
+
+  componentDidMount(){
+    fetch(`/cloudcontents/${this.props.item}`).then((res)=>{
+      if(res.headers.get("content-type").split(";")[0].includes("image")){
+        this.setState({fileType:"img"})
+      }
+      else{
+        this.setState({fileType:res.headers.get("content-type").split(";")[0]})
+      }
+      console.log(res.headers.get("content-type").split(";")[0])
+      return(res.blob())
+    }).then(img=>{
+      var u=URL.createObjectURL(img)
+      this.setState({url:u})
+    })
+  }
+
   preventDefault(event){
     /*
     //!not very safe
@@ -80,18 +110,42 @@ class CloudItem extends Component {
   }
   
 
+
+  renderCardMedia(){
+    if(this.state.fileType=="img"){
+      return(
+        <CardMedia
+          className={this.classes.cardMedia}
+          component="img"
+          src={this.state.url}
+          title={this.props.item}
+        />
+
+      )
+    }
+    else if(this.state.fileType=="application/pdf"){
+      return(
+        <object width="100%" height="%100" className={this.classes.cardMediaNonImg} data={this.state.url} type="application/pdf">   </object>
+      )
+
+    }
+    else if (this.state.fileType=="text/plain"){
+      return(
+        <object className={this.classes.cardMediaNonImg} width="100%" height="%100" data={this.state.url} type="text/plain">   </object>
+      )
+    }
+    else{
+      return(null)
+    }
+  }
+
   render(){
 
 
     return(
       
       <Card className={this.classes.card}>
-        <CardMedia
-          className={this.classes.cardMedia}
-          component="img"
-          src={`/cloudcontents/${this.props.item}`}
-          title={this.props.item}
-        />
+        {this.renderCardMedia()}
         <CardContent className={this.classes.cardContent}>
           <Typography gutterBottom variant="h5" component="h2">
             {this.props.item}
