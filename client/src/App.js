@@ -1,6 +1,6 @@
 
 import { createMuiTheme,  ThemeProvider } from '@material-ui/core/styles';
-import { indigo,cyan } from '@material-ui/core/colors';
+import {DarkTheme} from "./themes/darkTheme.json"
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import {Main,CloudItemsMenu,LoginScreen,Nav} from "./containers"
@@ -8,13 +8,18 @@ import {Main,CloudItemsMenu,LoginScreen,Nav} from "./containers"
 
 class App extends Component {
 
-  theme = createMuiTheme({
+  theme = createMuiTheme( DarkTheme
+    /*
+    {
+    
     palette: {
       type:"dark",
       primary: {main:"#90caf9"},
       
     }
-  });
+    
+  }
+  */);
 
   render(){
 
