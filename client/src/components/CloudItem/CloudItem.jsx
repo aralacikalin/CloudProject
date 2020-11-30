@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from "axios"
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -8,7 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { Link } from 'react-router-dom';
 
 
 class CloudItem extends Component {
@@ -82,22 +80,12 @@ class CloudItem extends Component {
   }
 
   preventDefault(event){
-    /*
-    //!not very safe
-    fetch(`/download/${this.props.item}`)
-      .then(res=>{
-        if(res.ok){
-          window.open(`http://localhost:4000/download/${this.props.item}`)
-        }
-      });
-      */
-     //probably safer alternative than above
      fetch(`/download/${this.props.item}`).then(response => {
-      const type = response.headers['content-type'];
+      //const type = response.headers['content-type'];
       const filename = response.headers
           .get("content-disposition")
           .split('"')[1];
-      const blob = response.blob().then(blob=>{
+      /*const blob = */response.blob().then(blob=>{
 
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
@@ -119,7 +107,7 @@ class CloudItem extends Component {
 
 
   renderCardMedia(){
-    if(this.state.fileType=="img"){
+    if(this.state.fileType==="img"){
       return(
         <CardMedia
           className={this.classes.cardMedia}
@@ -130,13 +118,13 @@ class CloudItem extends Component {
 
       )
     }
-    else if(this.state.fileType=="application/pdf"){
+    else if(this.state.fileType==="application/pdf"){
       return(
         <object width="100%" height="%100" className={this.classes.cardMediaNonImg} data={this.state.url} type="application/pdf">   </object>
       )
 
     }
-    else if (this.state.fileType=="text/plain"){
+    else if (this.state.fileType==="text/plain"){
       return(
         <object className={this.classes.cardMediaNonImg} width="100%" height="%100" data={this.state.url} type="text/plain">   </object>
       )
@@ -165,7 +153,7 @@ class CloudItem extends Component {
           <Button size="small" color="primary" onClick={this.preventDefault}>
             <GetAppIcon/>
           </Button>
-          <a style={{textDecoration:"none"}} target="_blank" href={this.state.url}>
+          <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
             <Button size="small" color="primary">
               See File
             </Button>
