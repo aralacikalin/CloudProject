@@ -3,9 +3,8 @@ import { createMuiTheme,  ThemeProvider } from '@material-ui/core/styles';
 import {DarkTheme} from "./themes/darkTheme.json"
 import {LightTheme} from "./themes/lightTheme.json"
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom'
 import {Main,CloudItemsMenu,LoginScreen,Nav} from "./containers"
-import { Button } from '@material-ui/core';
 
 
 class App extends Component {
@@ -14,9 +13,35 @@ class App extends Component {
 
     this.state={
       isDarkTheme:true,
-      theme:this.darkTheme
+      theme:this.darkTheme,
+      isLoggedIn:null
     }
     this.themeChanger=this.themeChanger.bind(this)
+    this.onLogin=this.onLogin.bind(this)
+
+
+
+  }
+
+
+
+  async componentDidMount(){
+    await fetch("/checkauth").then((res)=>{
+      if(res.ok){
+        this.setState({isLoggedIn:true})
+        
+      }
+      else{
+        this.setState({isLoggedIn:false})
+
+      }
+    })
+  }
+  
+
+  onLogin(){
+
+    this.setState({isLoggedIn:true})
   }
 
   darkTheme = createMuiTheme( DarkTheme
@@ -44,12 +69,17 @@ class App extends Component {
 
   render(){
 
+    if(this.state.isLoggedIn==null){
+      return(null)
+    }
+
     return (
       <Router>
         <ThemeProvider theme={this.state.theme}>
-          <Nav themeController={this.themeChanger}/>
-          <Route exact path="/LoginScreen" component={LoginScreen} />
-          <Route exact path="/" component={Main} />
+          {this.state.isLoggedIn?<Nav themeController={this.themeChanger}/>:null}
+          {this.state.isLoggedIn?<Redirect to="home"/>:<Redirect to="/login"/>}
+          <Route exact path="/login" render={(props)=>(<LoginScreen {...props} onLogin={this.onLogin}/>)} />
+          <Route exact path="/home" component={Main} />
           <Route exact path="/clouditems" component={CloudItemsMenu} />
       </ThemeProvider>
         </Router>

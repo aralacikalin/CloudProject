@@ -19,7 +19,7 @@ class Nav extends Component {
     }
 
     componentDidMount(){
-        if(window.location.pathname==="/"){
+        if(window.location.pathname==="/home"){
             this.setState({value:0})
         }
         else if(window.location.pathname==="/clouditems"){
@@ -34,7 +34,7 @@ class Nav extends Component {
 
     handleRedirect(){
         if(this.state.value===0){
-            return(<Redirect to="/"/>)
+            return(<Redirect to="/home"/>)
         }
         else if(this.state.value===1){
             return(<Redirect to="/clouditems"/>)
