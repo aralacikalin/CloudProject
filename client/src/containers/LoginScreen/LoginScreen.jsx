@@ -261,7 +261,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: '93vh',
+    height: '100vh',
   },
   image: {
     backgroundImage: 'url(https://source.unsplash.com/random)',
@@ -290,7 +290,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function LoginScreen() {
+export default function LoginScreen(props) {
   const classes = useStyles();
 
   const [open,setOpen]=useState(false)
@@ -316,6 +316,7 @@ export default function LoginScreen() {
       } else {
         //TODO Change the view
         setIsLoggedin(true)
+        props.onLogin()
       }
 
     })
@@ -331,7 +332,7 @@ export default function LoginScreen() {
 
   return (
     <div>
-      {isLoggedin?(<Redirect to="/" />):(null)}
+      {isLoggedin?(<Redirect to="/Home" />):(null)}
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
       <Grid item xs={false} sm={3} md={7} className={classes.image} />
