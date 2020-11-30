@@ -5,7 +5,6 @@ import {LightTheme} from "./themes/lightTheme.json"
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom'
 import {Main,CloudItemsMenu,LoginScreen,Nav} from "./containers"
-import { Button } from '@material-ui/core';
 
 
 class App extends Component {

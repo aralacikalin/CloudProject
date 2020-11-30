@@ -303,7 +303,6 @@ export default function LoginScreen(props) {
   };
   async function handleClick(event) {
     var apiBaseUrl = "/login/authenticate";
-    var self = this;
     var payload = {
       username: username,
       password: password
@@ -324,10 +323,6 @@ export default function LoginScreen(props) {
         console.error('There was an error!', error);
       });
     event.preventDefault()
-  }
-
-  async function handleTest(){
-    await fetch("http://localhost:4000/login",{credentials: 'include'})
   }
 
   return (
