@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Button } from '@material-ui/core';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 class Nav extends Component {
 
@@ -59,7 +60,10 @@ class Nav extends Component {
             >
             <Tab label="Main" />
             <Tab label="Cloud" />
-            <Button style={{marginLeft:"auto"}} onClick={this.props.themeController} ><Brightness7Icon/> </Button>
+            <div style={{marginLeft:"auto",marginTop:"auto",marginBottom:"auto"}}>
+                <Button style={{margin:"auto"}} onClick={this.props.onLogout} ><ExitToAppIcon/> </Button>
+                <Button style={{margin:"auto"}} onClick={this.props.themeController} ><Brightness7Icon/> </Button>
+            </div>
             </Tabs>
             {this.handleRedirect()}
         </Paper>

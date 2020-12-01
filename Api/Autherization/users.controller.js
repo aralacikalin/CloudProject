@@ -13,10 +13,10 @@ router.get('/:id', authorize(), getById);       // all authenticated users
 module.exports = router;
 
 function authenticate(req, res, next) {
-    userService.authenticate(req.body)
+    userService.authenticate({username:req.body.username,password:req.body.password})
         .then(user => {
             if(user){
-                res.cookie("jwt",user ,{httpOnly: false,expires: new Date(Date.now() + 9999999)});
+                res.cookie("jwt",user ,{httpOnly: false,expires: req.body.rememberme? new Date(Date.now() + (14*24*60*60*1000)):0});
                 res.json(user)
             }else{
                 return res.status(400).json({ message: 'Username or password is incorrect' })

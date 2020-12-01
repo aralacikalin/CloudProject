@@ -297,6 +297,7 @@ export default function LoginScreen(props) {
   const [isLoggedin,setIsLoggedin]=useState(false)
   const [username,setUsername]=useState("")
   const [password,setpassword]=useState("")
+  const [rememberme,setrememberme]=useState(false)
 
   function handleClose(){
     setOpen(false)
@@ -305,7 +306,8 @@ export default function LoginScreen(props) {
     var apiBaseUrl = "/login/authenticate";
     var payload = {
       username: username,
-      password: password
+      password: password,
+      rememberme:rememberme
     }
     fetch(apiBaseUrl, { method: "POST", credentials: 'include', headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), }).then(async response => {
       const data = await response.json();
@@ -365,7 +367,7 @@ export default function LoginScreen(props) {
               onChange={event=>setpassword(event.target.value)}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary" onChange={event=>{setrememberme(event.target.value)}} />}
               label="Remember me"
             />
             <Button

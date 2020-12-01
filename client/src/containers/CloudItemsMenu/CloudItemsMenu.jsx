@@ -125,7 +125,7 @@ class CloudItemsMenu extends Component {
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {this.state.items&& this.state.items.map((item) => (
-                        <Grid item key={item} xs={12} sm={6} md={4}>
+                        <Grid item key={item} xs={12} sm={6} md={4}> 
                             <CloudItem item={item}/>
                         </Grid>
                         ))}
@@ -133,7 +133,7 @@ class CloudItemsMenu extends Component {
                     </Container>
                 </main>
                 </React.Fragment>
-        );
+        );//lower md value to make the rows have more files
     }
 }
 

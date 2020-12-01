@@ -18,6 +18,7 @@ class App extends Component {
     }
     this.themeChanger=this.themeChanger.bind(this)
     this.onLogin=this.onLogin.bind(this)
+    this.onLogout=this.onLogout.bind(this)
 
 
 
@@ -67,6 +68,14 @@ class App extends Component {
 
  }
 
+ async onLogout(){
+  await fetch("/logout").then(res=>{
+    if(res.ok){
+      this.setState({isLoggedIn:false})
+    }
+  })
+ }
+
   render(){
 
     if(this.state.isLoggedIn==null){
@@ -76,7 +85,7 @@ class App extends Component {
     return (
       <Router>
         <ThemeProvider theme={this.state.theme}>
-          {this.state.isLoggedIn?<Nav themeController={this.themeChanger}/>:null}
+          {this.state.isLoggedIn?<Nav themeController={this.themeChanger} onLogout={this.onLogout}/>:null}
           {this.state.isLoggedIn?<Redirect to="home"/>:<Redirect to="/login"/>}
           <Route exact path="/login" render={(props)=>(<LoginScreen {...props} onLogin={this.onLogin}/>)} />
           <Route exact path="/home" component={Main} />

@@ -17,6 +17,7 @@ var contentRouter = require('./routes/content');
 var userInfoRouter = require('./routes/userinfo');
 var authentication = require('./Autherization/users.controller');
 var checkAuth = require('./routes/checkAuth');
+var logoutRouter = require('./routes/logout');
 
 var app = express();
 var cors=require("cors")
@@ -46,6 +47,7 @@ app.use('/upload', uploadRouter);
 app.use('/content', contentRouter);
 app.use('/userinfo', userInfoRouter);
 app.use('/checkauth', checkAuth);
+app.use('/logout', logoutRouter);
 
 app.use('/login', authentication);
 
