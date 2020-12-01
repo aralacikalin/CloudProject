@@ -297,7 +297,7 @@ export default function LoginScreen(props) {
   const [isLoggedin,setIsLoggedin]=useState(false)
   const [username,setUsername]=useState("")
   const [password,setpassword]=useState("")
-  const [rememberme,setrememberme]=useState(false)
+  const [rememberme,setrememberme]=useState(true)
 
   function handleClose(){
     setOpen(false)
@@ -367,7 +367,7 @@ export default function LoginScreen(props) {
               onChange={event=>setpassword(event.target.value)}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" onChange={event=>{setrememberme(event.target.value)}} />}
+              control={<Checkbox value="remember" checked color="primary" onChange={event=>{setrememberme(event.target.value)}} />}
               label="Remember me"
             />
             <Button

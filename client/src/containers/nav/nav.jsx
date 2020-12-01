@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Avatar, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
