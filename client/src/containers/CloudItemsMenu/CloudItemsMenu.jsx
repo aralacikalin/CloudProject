@@ -12,10 +12,6 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
-function Alert(props) {
-  return (<MuiAlert elevation={6} variant="filled" {...props} />);
-}
-
 class CloudItemsMenu extends Component {
     ismounted=false
     constructor(props){
@@ -140,7 +136,7 @@ class CloudItemsMenu extends Component {
                     {/* Hero unit */}
                     <div className={this.classes.heroContent}>
                     <Snackbar open={this.state.isUploadSnack} autoHideDuration={6000} onClose={this.handleSnackClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
-                      <MuiAlert onClose={this.handleSnackClose} severity="success" elevation={6} variant="outlined" color="success">
+                      <MuiAlert onClose={this.handleSnackClose} severity="success" elevation={6} variant="standard" color="success">
                         Successfully Uploaded Files!
                       </MuiAlert>
                     </Snackbar>
