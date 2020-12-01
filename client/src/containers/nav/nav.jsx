@@ -29,13 +29,15 @@ class Nav extends Component {
             this.setState({value:1})
         }
 
-        var userID=this.parseJwt(document.cookie).sub
-        console.log(userID)
-        await fetch(`/userinfo/${userID}`).then(res=>{
+        var username=this.parseJwt(document.cookie).username
+
+        this.setState({username:username})
+
+        /*await fetch(`/userinfo/${userID}`).then(res=>{
             if(res.ok){
                 res.json().then(data=>{this.setState({username:data.username})})
             }
-        })
+        });*/
     }
 
     parseJwt(token) {
