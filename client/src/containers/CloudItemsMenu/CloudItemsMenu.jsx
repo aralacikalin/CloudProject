@@ -119,7 +119,7 @@ class CloudItemsMenu extends Component {
       data.append("file",file)
   
       console.log(data)
-      await fetch("http://localhost:4000/upload",{method:"POST",body:data,credentials: 'include'})
+      await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
     }
 
     handleSnackClose(){
