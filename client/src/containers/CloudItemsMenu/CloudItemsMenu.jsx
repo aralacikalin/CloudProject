@@ -7,6 +7,14 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {CloudItem} from '../../components';
+import {DropzoneDialog} from 'material-ui-dropzone'
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return (<MuiAlert elevation={6} variant="filled" {...props} />);
+}
 
 class CloudItemsMenu extends Component {
     ismounted=false
@@ -14,11 +22,17 @@ class CloudItemsMenu extends Component {
         super(props)
 
         this.state={
-            items:[]
+            items:[],
+            isUploadView:false,
+            isUploadSnack:false
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
         this.classes=this.classes.bind(this)
+        this.handleUploadViewClose=this.handleUploadViewClose.bind(this)
+        this.handleUploadViewOpen=this.handleUploadViewOpen.bind(this)
+        this.handleUpload=this.handleUpload.bind(this)
+        this.handleSnackClose=this.handleSnackClose.bind(this)
     }
 
     useStyles = ()=> makeStyles((theme) => ({
@@ -87,6 +101,35 @@ class CloudItemsMenu extends Component {
 
     }
 
+    handleUploadViewClose(){
+      this.setState({isUploadView:false})
+    }
+    handleUploadViewOpen(){
+      this.setState({isUploadView:true})
+    }
+
+    async handleUpload(files){
+      if(files.length){
+        files.forEach(file=>{this.onFileUpload(file)})
+        this.setState({isUploadView:false,isUploadSnack:true})
+      }
+
+    }
+
+    async onFileUpload(file){
+      //fetch("upload",{method:"POST",body:this.state.uploadedFile})
+      const data=new FormData()
+      console.log(file)
+      data.append("file",file)
+  
+      console.log(data)
+      await fetch("http://localhost:4000/upload",{method:"POST",body:data,credentials: 'include'})
+    }
+
+    handleSnackClose(){
+      this.setState({isUploadSnack:false})
+    }
+
 
     render(){
 
@@ -96,6 +139,21 @@ class CloudItemsMenu extends Component {
                 <main>
                     {/* Hero unit */}
                     <div className={this.classes.heroContent}>
+                    <Snackbar open={this.state.isUploadSnack} autoHideDuration={6000} onClose={this.handleSnackClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                      <MuiAlert onClose={this.handleSnackClose} severity="success" elevation={6} variant="outlined" color="success">
+                        Successfully Uploaded Files!
+                      </MuiAlert>
+                    </Snackbar>
+                      <DropzoneDialog
+                        cancelButtonText={"cancel"}
+                        submitButtonText={"submit"}
+                        open={this.state.isUploadView}
+                        onClose={this.handleUploadViewClose}
+                        onSave={this.handleUpload}
+                        showPreviews={true}
+                        showFileNamesInPreview={true}
+                        useChipsForPreview
+                      />
                     <Container maxWidth="sm">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Cloud Items
@@ -108,8 +166,8 @@ class CloudItemsMenu extends Component {
                         <div className={this.classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                            <Button variant="contained" color="primary">
-                                Upload File (not implemented yet)
+                            <Button variant="contained" color="primary" onClick={this.handleUploadViewOpen} startIcon={<CloudUploadIcon />}>
+                                Upload File
                             </Button>
                             </Grid>
                             <Grid item>
