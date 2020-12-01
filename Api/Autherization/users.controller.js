@@ -10,6 +10,7 @@ const {secret}=require("../config.json")
 router.post('/authenticate', authenticate);     // public route
 router.get('/', authorize(Role.Admin) , getAll); // admin only
 router.get('/:id', authorize(), getById);       // all authenticated users
+router.get('/username', authorize(), getUser);       // get username
 module.exports = router;
 
 function authenticate(req, res, next) {
@@ -30,6 +31,15 @@ function getAll(req, res, next) {
     userService.getAll()
         .then(users => res.json(users))
         .catch(err => next(err));
+}
+
+function getUser(req,res,next){
+    //const currentUser=req.user;
+    //userService.getById(currentUser.sub).then(user=>user?res.json(user.username):res.sendStatus(404))
+    const token=res.cookie.jwt
+    const user=jwt.verify(token,secret)
+    userService.getById(user.sub)
+    res.json(userService.getById(user.sub).then(user=>user.username))
 }
 
 function getById(req, res, next) {
