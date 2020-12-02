@@ -86,7 +86,7 @@ class App extends Component {
       <Router>
         <ThemeProvider theme={this.state.theme}>
           {this.state.isLoggedIn?<Nav themeController={this.themeChanger} onLogout={this.onLogout}/>:null}
-          {/*this.state.isLoggedIn?<Redirect to="home"/>:<Redirect to="/login"/>*/}
+          {this.state.isLoggedIn?<Redirect to="home"/>:<Redirect to="/login"/>}
           <Route exact path="/login" render={(props)=>(<LoginScreen {...props} onLogin={this.onLogin}/>)} />
           <Route exact path="/home" component={Main} />
           <Route exact path="/clouditems" component={CloudItemsMenu} />
