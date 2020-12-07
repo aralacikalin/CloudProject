@@ -149,6 +149,7 @@ class CloudItemsMenu extends Component {
                         showPreviews={true}
                         showFileNamesInPreview={true}
                         useChipsForPreview
+                        maxFileSize={10000000000}
                       />
                     <Container maxWidth="sm">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>

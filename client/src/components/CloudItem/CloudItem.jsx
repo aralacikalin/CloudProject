@@ -7,6 +7,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { Link } from 'react-router-dom';
+
+const {proxy} =require("../../../package.json")
 
 
 class CloudItem extends Component {
@@ -64,7 +67,9 @@ class CloudItem extends Component {
   classes =()=> this.useStyles();
 
   componentDidMount(){
-    fetch(`/cloudcontents/${this.props.item}`).then((res)=>{
+    const controller = new AbortController()
+    const signal = controller.signal
+    fetch(`/cloudcontents/${this.props.item}`,{signal:signal}).then((res)=>{
       if(res.headers.get("content-type").split(";")[0].includes("image")){
         this.setState({fileType:"img"})
       }
@@ -72,10 +77,17 @@ class CloudItem extends Component {
         this.setState({fileType:res.headers.get("content-type").split(";")[0]})
       }
       console.log(res.headers.get("content-type").split(";")[0])
-      return(res.blob())
+      if(res.headers.get("content-length")<200000000){
+
+        return(res.blob())
+      }
+      controller.abort()
     }).then(img=>{
-      var u=URL.createObjectURL(img)
-      this.setState({url:u})
+      if (img){
+
+        var u=URL.createObjectURL(img)
+        this.setState({url:u})
+      }
     })
   }
 
@@ -150,9 +162,13 @@ class CloudItem extends Component {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary" onClick={this.preventDefault}>
+        <a style={{textDecoration:"none"}}  href={`${proxy}download/${this.props.item}`}>
+
+          <Button size="small" color="primary">
             <GetAppIcon/>
           </Button>
+        </a>
+
           <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
             <Button size="small" color="primary">
               See File
