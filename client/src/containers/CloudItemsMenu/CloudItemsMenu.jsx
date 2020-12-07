@@ -12,6 +12,8 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 
+import Dropzone from 'react-dropzone'
+
 class CloudItemsMenu extends Component {
     ismounted=false
     constructor(props){
@@ -20,7 +22,8 @@ class CloudItemsMenu extends Component {
         this.state={
             items:[],
             isUploadView:false,
-            isUploadSnack:false
+            isUploadSnack:false,
+            files:[]
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
@@ -104,10 +107,10 @@ class CloudItemsMenu extends Component {
       this.setState({isUploadView:true})
     }
 
-    async handleUpload(files){
-      if(files.length){
-        files.forEach(file=>{this.onFileUpload(file)})
-        this.setState({isUploadView:false,isUploadSnack:true})
+    async handleUpload(){
+      if(this.state.files.length){
+        this.state.files.forEach(file=>{this.onFileUpload(file)})
+        //this.setState({isUploadView:false,isUploadSnack:true})
       }
 
     }
@@ -126,6 +129,10 @@ class CloudItemsMenu extends Component {
       this.setState({isUploadSnack:false})
     }
 
+    onDrop(acceptedFiles){
+      var tempArray=this.state.files
+
+    }
 
     render(){
 
@@ -163,8 +170,23 @@ class CloudItemsMenu extends Component {
                         <div className={this.classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                            <Button variant="contained" color="primary" onClick={this.handleUploadViewOpen} startIcon={<CloudUploadIcon />}>
-                                Upload File
+                            <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}}>
+                              {({getRootProps, getInputProps}) => (
+                                <section>
+                                  <div {...getRootProps()}>
+                                    <input multiple {...getInputProps()} />
+                                    <p>Drag 'n' drop some files here, or click to select files</p>
+                                    <h4>Files</h4>
+                                    <ul>{this.state.files.map(file=>( <li key={file.name}>
+                                  {file.name} - {file.size} bytes
+                                </li>))}</ul>
+                                  </div>
+                                </section>
+                              )}
+                            </Dropzone>
+
+                            <Button variant="outlined" color="primary" onClick={this.handleUpload}>
+                                action
                             </Button>
                             </Grid>
                             <Grid item>
