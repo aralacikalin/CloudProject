@@ -6,7 +6,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'; //TODO can use this icon
 import Grid from '@material-ui/core/Grid';
-
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
 
 
 
@@ -31,6 +33,8 @@ class FileInput extends Component {
 
   }
 
+
+
   async onFileUpload(file){
     //fetch("upload",{method:"POST",body:this.state.uploadedFile})
     const data=new FormData()
@@ -41,13 +45,35 @@ class FileInput extends Component {
     Axios.post("/upload",data,{onUploadProgress: progressEvent=>{
       this.setState({uploadProgress:parseInt(Math.round((progressEvent.loaded*100)/progressEvent.total))})
     }}).then(()=>{
-      this.setState({isUploadSnack:true})
+      this.setState({isUploadSnack:true,uploadProgress:0})
     });
     //await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
   }
 
   handleSnackClose(){
     this.setState({isUploadSnack:false})
+  }
+
+  LinearProgressWithLabel() {
+
+    if(this.state.uploadProgress!=0){
+
+        return (
+          <Box display="flex" alignItems="center">
+            <Box width="100%" mr={1}>
+              <LinearProgress variant="determinate" value={this.state.uploadProgress} />
+            </Box>
+            <Box minWidth={35}>
+              <Typography variant="body2" color="textSecondary">{`${Math.round(
+                this.state.uploadProgress
+              )}%`}</Typography>
+            </Box>
+          </Box>
+        );
+    }
+    else{
+        return(null);
+    }
   }
 
   render(){
@@ -75,9 +101,9 @@ class FileInput extends Component {
                         </section>
                         )}
                     </Dropzone>
+                    {this.LinearProgressWithLabel()}
                 </Grid>
                 <Grid item>
-                    <div>{this.state.uploadProgress}</div>
                     <Button variant="outlined" color="primary" onClick={this.handleUpload}>Submit Files</Button>
                 </Grid>
             </Grid>
