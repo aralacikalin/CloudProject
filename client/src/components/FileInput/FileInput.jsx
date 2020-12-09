@@ -4,6 +4,8 @@ import Dropzone from 'react-dropzone'
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload'; //TODO can use this icon
+
 
 
 class FileInput extends Component {

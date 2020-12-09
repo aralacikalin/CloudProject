@@ -7,7 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { Link } from 'react-router-dom';
 
 const {proxy} =require("../../../package.json")
 
