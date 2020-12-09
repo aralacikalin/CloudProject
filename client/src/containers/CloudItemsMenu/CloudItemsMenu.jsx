@@ -11,6 +11,7 @@ import {DropzoneDialog} from 'material-ui-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Axios, {axios} from "axios";
 
 import Dropzone from 'react-dropzone'
 
@@ -23,7 +24,8 @@ class CloudItemsMenu extends Component {
             items:[],
             isUploadView:false,
             isUploadSnack:false,
-            files:[]
+            files:[],
+            uploadProgress:0
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
@@ -122,7 +124,10 @@ class CloudItemsMenu extends Component {
       data.append("file",file)
   
       console.log(data)
-      await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
+      Axios.post("/upload",data,{onUploadProgress: progressEvent=>{
+        this.setState({uploadProgress:parseInt(Math.round((progressEvent.loaded*100)/progressEvent.total))})
+      }});
+      //await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
     }
 
     handleSnackClose(){
@@ -184,6 +189,7 @@ class CloudItemsMenu extends Component {
                                 </section>
                               )}
                             </Dropzone>
+                                    <div>{this.state.uploadProgress}</div>
 
                             <Button variant="outlined" color="primary" onClick={this.handleUpload}>
                                 action
