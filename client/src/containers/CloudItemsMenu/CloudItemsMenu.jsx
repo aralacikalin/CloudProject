@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {CloudItem, FileInput} from '../../components';
-import {DropzoneDialog} from 'material-ui-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -22,7 +21,6 @@ class CloudItemsMenu extends Component {
         this.state={
             items:[],
             isUploadView:false,
-            isUploadSnack:false,
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
@@ -124,17 +122,6 @@ class CloudItemsMenu extends Component {
                         Successfully Uploaded Files!
                       </MuiAlert>
                     </Snackbar>
-                      <DropzoneDialog
-                        cancelButtonText={"cancel"}
-                        submitButtonText={"submit"}
-                        open={this.state.isUploadView}
-                        onClose={this.handleUploadViewClose}
-                        onSave={this.handleUpload}
-                        showPreviews={true}
-                        showFileNamesInPreview={true}
-                        useChipsForPreview
-                        maxFileSize={10000000000}
-                      />
                     <Container maxWidth="sm">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Cloud Items

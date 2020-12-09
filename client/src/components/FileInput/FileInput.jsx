@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Axios from "axios";
 import Dropzone from 'react-dropzone'
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
 class FileInput extends Component {
@@ -9,16 +11,18 @@ class FileInput extends Component {
     super(props)
     this.state={
         files:[],
-        uploadProgress:0
+        uploadProgress:0,
+        isUploadSnack:false,
+
     }
     this.handleUpload=this.handleUpload.bind(this);
     this.onFileUpload=this.onFileUpload.bind(this);
+    this.handleSnackClose=this.handleSnackClose.bind(this);
   }
 
   async handleUpload(){
     if(this.state.files.length){
       this.state.files.forEach(file=>{this.onFileUpload(file)})
-      //this.setState({isUploadView:false,isUploadSnack:true})
     }
 
   }
@@ -32,14 +36,25 @@ class FileInput extends Component {
     console.log(data)
     Axios.post("/upload",data,{onUploadProgress: progressEvent=>{
       this.setState({uploadProgress:parseInt(Math.round((progressEvent.loaded*100)/progressEvent.total))})
-    }});
+    }}).then(()=>{
+      this.setState({isUploadSnack:true})
+    });
     //await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
+  }
+
+  handleSnackClose(){
+    this.setState({isUploadSnack:false})
   }
 
   render(){
 
     return (
         <div>
+            <Snackbar open={this.state.isUploadSnack} autoHideDuration={6000} onClose={this.handleSnackClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                      <MuiAlert onClose={this.handleSnackClose} severity="success" elevation={6} variant="standard" color="success">
+                        Successfully Uploaded Files!
+                      </MuiAlert>
+                    </Snackbar>
             <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}}>
                 {({getRootProps, getInputProps}) => (
                 <section>
