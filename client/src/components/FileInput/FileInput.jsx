@@ -22,6 +22,7 @@ const dropzoneDragStyle={
     background:"darkslategrey",
     color:"white"
 };
+//TODO make this style better for both dark and light themese
 const dropzoneDraggedStyle={
     borderStyle:"dashed",
     padding:10,
@@ -141,7 +142,7 @@ class FileInput extends Component {
                     {this.LinearProgressWithLabel()}
                 </Grid>
                 <Grid item>
-                    <Button variant="outlined" color="primary" onClick={this.handleUpload}>Submit Files</Button>
+                    <Button variant="contained" color="primary" onClick={this.handleUpload}>Submit Files</Button>
                 </Grid>
             </Grid>
             <Snackbar open={this.state.isUploadSnack} autoHideDuration={6000} onClose={this.handleSnackClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
