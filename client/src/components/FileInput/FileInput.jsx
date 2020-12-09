@@ -58,14 +58,19 @@ class FileInput extends Component {
                 <Grid item>
                     <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}}>
                         {({getRootProps, getInputProps}) => (
-                        <section>
-                            <div {...getRootProps()}>
+                        <section className="container">
+                            <div {...getRootProps({className: 'dropzone'})}>
                             <input multiple {...getInputProps()} />
                             <p>Drag 'n' drop some files here, or click to select files</p>
                             <h4>Files</h4>
-                            <ul>{this.state.files.map(file=>( <li key={file.name}>
-                            {file.name} - {(parseInt(file.size)/1000000).toFixed(1)} Megabytes
-                        </li>))}</ul>
+                            <aside>
+                                <ul>{this.state.files.map(file=>
+                                    (<li key={file.name}>
+                                        {file.name} - {(parseInt(file.size)/1000000).toFixed(1)} Megabytes
+                                    </li>))}
+                                </ul>
+
+                            </aside>
                             </div>
                         </section>
                         )}
