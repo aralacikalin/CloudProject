@@ -6,14 +6,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {CloudItem} from '../../components';
+import {CloudItem, FileInput} from '../../components';
 import {DropzoneDialog} from 'material-ui-dropzone'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import Axios, {axios} from "axios";
 
-import Dropzone from 'react-dropzone'
+
 
 class CloudItemsMenu extends Component {
     ismounted=false
@@ -24,15 +23,12 @@ class CloudItemsMenu extends Component {
             items:[],
             isUploadView:false,
             isUploadSnack:false,
-            files:[],
-            uploadProgress:0
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
         this.classes=this.classes.bind(this)
         this.handleUploadViewClose=this.handleUploadViewClose.bind(this)
         this.handleUploadViewOpen=this.handleUploadViewOpen.bind(this)
-        this.handleUpload=this.handleUpload.bind(this)
         this.handleSnackClose=this.handleSnackClose.bind(this)
     }
 
@@ -109,35 +105,11 @@ class CloudItemsMenu extends Component {
       this.setState({isUploadView:true})
     }
 
-    async handleUpload(){
-      if(this.state.files.length){
-        this.state.files.forEach(file=>{this.onFileUpload(file)})
-        //this.setState({isUploadView:false,isUploadSnack:true})
-      }
-
-    }
-
-    async onFileUpload(file){
-      //fetch("upload",{method:"POST",body:this.state.uploadedFile})
-      const data=new FormData()
-      console.log(file)
-      data.append("file",file)
-  
-      console.log(data)
-      Axios.post("/upload",data,{onUploadProgress: progressEvent=>{
-        this.setState({uploadProgress:parseInt(Math.round((progressEvent.loaded*100)/progressEvent.total))})
-      }});
-      //await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
-    }
 
     handleSnackClose(){
       this.setState({isUploadSnack:false})
     }
 
-    onDrop(acceptedFiles){
-      var tempArray=this.state.files
-
-    }
 
     render(){
 
@@ -175,25 +147,7 @@ class CloudItemsMenu extends Component {
                         <div className={this.classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                            <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}}>
-                              {({getRootProps, getInputProps}) => (
-                                <section>
-                                  <div {...getRootProps()}>
-                                    <input multiple {...getInputProps()} />
-                                    <p>Drag 'n' drop some files here, or click to select files</p>
-                                    <h4>Files</h4>
-                                    <ul>{this.state.files.map(file=>( <li key={file.name}>
-                                  {file.name} - {file.size} bytes
-                                </li>))}</ul>
-                                  </div>
-                                </section>
-                              )}
-                            </Dropzone>
-                                    <div>{this.state.uploadProgress}</div>
-
-                            <Button variant="outlined" color="primary" onClick={this.handleUpload}>
-                                action
-                            </Button>
+                              <FileInput/>
                             </Grid>
                             <Grid item>
                             <Button variant="outlined" color="primary">
