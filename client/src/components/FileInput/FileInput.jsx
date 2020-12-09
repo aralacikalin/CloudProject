@@ -82,10 +82,10 @@ class FileInput extends Component {
         <div>
             <Grid container spacing={2} justify="center">
                 <Grid item>
-                    <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}}>
+                    <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}} >
                         {({getRootProps, getInputProps}) => (
-                        <section className="container">
-                            <div {...getRootProps({className: 'dropzone'})}>
+                        <section className="container" >
+                            <div {...getRootProps({className: 'dropzone'})} style={{borderStyle:"dashed",padding:10}}>
                             <input multiple {...getInputProps()} />
                             <p>Drag 'n' drop some files here, or click to select files</p>
                             <h4>Files</h4>
