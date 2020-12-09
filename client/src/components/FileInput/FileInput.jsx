@@ -11,6 +11,25 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 
+const dropzoneStyle={
+    borderStyle:"dashed",
+    padding:10
+};
+const dropzoneDragStyle={
+    borderStyle:"dashed",
+    padding:10,
+    borderColor:"green",
+    background:"darkslategrey",
+    color:"white"
+};
+const dropzoneDraggedStyle={
+    borderStyle:"dashed",
+    padding:10,
+    background: "repeating-linear-gradient(45deg, darkblue ,darkcyan 15px)",
+    color:"white"
+};
+
+
 
 class FileInput extends Component {
   constructor(props){
@@ -19,11 +38,29 @@ class FileInput extends Component {
         files:[],
         uploadProgress:0,
         isUploadSnack:false,
+        currentDropStyle:dropzoneStyle
 
     }
     this.handleUpload=this.handleUpload.bind(this);
     this.onFileUpload=this.onFileUpload.bind(this);
     this.handleSnackClose=this.handleSnackClose.bind(this);
+    this.onDragEnter=this.onDragEnter.bind(this);
+    this.onDragExit=this.onDragExit.bind(this);
+    this.onDropAccept=this.onDropAccept.bind(this);
+  }
+
+  onDragEnter(){
+      this.setState({currentDropStyle:dropzoneDragStyle})
+      
+    }
+    
+    onDragExit(){
+        this.setState({currentDropStyle:dropzoneStyle})
+
+  }
+    onDropAccept(){
+        this.setState({currentDropStyle:dropzoneDraggedStyle})
+
   }
 
   async handleUpload(){
@@ -82,10 +119,10 @@ class FileInput extends Component {
         <div>
             <Grid container spacing={2} justify="center">
                 <Grid item>
-                    <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}} >
+                    <Dropzone onDragEnter={this.onDragEnter} onDropAccepted={this.onDropAccept} onDragLeave={this.onDragExit}  onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}} >
                         {({getRootProps, getInputProps}) => (
                         <section className="container" >
-                            <div {...getRootProps({className: 'dropzone'})} style={{borderStyle:"dashed",padding:10}}>
+                            <div {...getRootProps({className: 'dropzone'})} style={this.state.currentDropStyle}>
                             <input multiple {...getInputProps()} />
                             <p>Drag 'n' drop some files here, or click to select files</p>
                             <h4>Files</h4>
