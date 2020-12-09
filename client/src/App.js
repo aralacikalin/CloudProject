@@ -4,7 +4,7 @@ import {DarkTheme} from "./themes/darkTheme.json"
 import {LightTheme} from "./themes/lightTheme.json"
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom'
-import {Main,CloudItemsMenu,LoginScreen,Nav} from "./containers"
+import {Main,CloudItemsMenu,LoginScreen,Nav, RemoteCommand} from "./containers"
 
 
 class App extends Component {
@@ -90,6 +90,7 @@ class App extends Component {
           <Route exact path="/login" render={(props)=>(<LoginScreen {...props} onLogin={this.onLogin}/>)} />
           <Route exact path="/home" component={Main} />
           <Route exact path="/clouditems" component={CloudItemsMenu} />
+          <Route exact path="/Remote" component={RemoteCommand} />
       </ThemeProvider>
         </Router>
     );

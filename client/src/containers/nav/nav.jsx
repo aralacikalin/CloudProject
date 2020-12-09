@@ -28,6 +28,9 @@ class Nav extends Component {
         else if(window.location.pathname==="/clouditems"){
             this.setState({value:1})
         }
+        else if(window.location.pathname==="/remote"){
+            this.setState({value:2})
+        }
 
         var username=this.parseJwt(document.cookie).username
 
@@ -58,7 +61,9 @@ class Nav extends Component {
         }
         else if(this.state.value===1){
             return(<Redirect to="/clouditems"/>)
-
+        }
+        else if(this.state.value===2){
+            return(<Redirect to="/remote"/>)
         }
         else{
             return(null)
@@ -79,6 +84,7 @@ class Nav extends Component {
             >
             <Tab label="Main" />
             <Tab label="Cloud" />
+            <Tab label="Remote" />
             <div style={{marginLeft:"auto",marginTop:"auto",marginBottom:"auto",display:"flex",flexDirection:"row"}}>
                 <div style={{margin:"auto",padding:"6px 8px"}}>{this.state.username}</div>
                 <Button style={{margin:"auto"}} onClick={this.props.onLogout} ><ExitToAppIcon/> </Button>
