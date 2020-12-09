@@ -5,6 +5,8 @@ import {LightTheme} from "./themes/lightTheme.json"
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom'
 import {Main,CloudItemsMenu,LoginScreen,Nav, RemoteCommand} from "./containers"
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 class App extends Component {
@@ -85,9 +87,14 @@ class App extends Component {
     return (
       <Router>
         <ThemeProvider theme={this.state.theme}>
-          {this.state.isLoggedIn?<Nav themeController={this.themeChanger} onLogout={this.onLogout}/>:null}
-          {this.state.isLoggedIn?<Redirect to="home"/>:<Redirect to="/login"/>}
+          {this.state.isLoggedIn?<Nav themeController={this.themeChanger} onLogout={this.onLogout}/>:(
+            <Backdrop open={true}>
+            <CircularProgress color="inherit" />
+          </Backdrop>
+          )}
+          {!this.state.isLoggedIn?<Redirect to="/login"/>:null}
           <Route exact path="/login" render={(props)=>(<LoginScreen {...props} onLogin={this.onLogin}/>)} />
+          <Route render={() => !this.state.isLoggedIn?<Redirect to="/login"/>:<Redirect to="/home" />} />
           <Route exact path="/home" component={Main} />
           <Route exact path="/clouditems" component={CloudItemsMenu} />
           <Route exact path="/Remote" component={RemoteCommand} />
