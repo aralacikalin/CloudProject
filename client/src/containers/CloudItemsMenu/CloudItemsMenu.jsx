@@ -20,6 +20,7 @@ class CloudItemsMenu extends Component {
         this.state={
             items:[],
             isUploadView:false,
+            currentIp:null
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
@@ -66,6 +67,7 @@ class CloudItemsMenu extends Component {
 
     async componentDidMount(){
         this.fetchAll();
+        fetch("/ip").then(res=>res.json()).then(data=>{this.setState({currentIp:data.ip})})
         
     }
     componentWillUnmount(){
@@ -149,7 +151,7 @@ class CloudItemsMenu extends Component {
                     <Grid container spacing={4}>
                         {this.state.items&& this.state.items.map((item) => (
                         <Grid item key={item} xs={12} sm={6} md={4}> 
-                            <CloudItem item={item}/>
+                            <CloudItem item={item} ip={"http://"+this.state.currentIp+":4000/"}/>
                         </Grid>
                         ))}
                     </Grid>

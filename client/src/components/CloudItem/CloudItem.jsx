@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { Link } from 'react-router-dom';
 
 const {proxy} =require("../../../package.json")
 
@@ -161,7 +162,7 @@ class CloudItem extends Component {
           </Typography>
         </CardContent>
         <CardActions>
-        <a style={{textDecoration:"none"}}  href={`${proxy}download/${this.props.item}`}>
+        <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
 
           <Button size="small" color="primary">
             <GetAppIcon/>
