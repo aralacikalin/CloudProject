@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import {CloudItem, FileInput} from '../../components';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Cookies from "js-cookie";
 
 
 
@@ -68,6 +69,8 @@ class CloudItemsMenu extends Component {
     async componentDidMount(){
         this.fetchAll();
         fetch("/ip").then(res=>res.json()).then(data=>{this.setState({currentIp:data.ip})})
+        Cookies.set("jwt",Cookies.get("jwt"),{domain:"http://"+"192.168.1.30"+":4000"})
+        
         
     }
     componentWillUnmount(){

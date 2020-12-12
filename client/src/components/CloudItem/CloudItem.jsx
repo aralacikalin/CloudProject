@@ -168,6 +168,9 @@ class CloudItem extends Component {
             <GetAppIcon/>
           </Button>
         </a>
+          <Button size="small" onClick={this.preventDefault} color="primary">
+            <GetAppIcon/>
+          </Button>
 
           <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
             <Button size="small" color="primary">
