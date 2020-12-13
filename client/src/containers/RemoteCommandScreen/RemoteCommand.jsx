@@ -108,11 +108,17 @@ export default function RemoteCommand(props) {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const [key,setKey]=useState("")
     const [currentOption,setCurrentOption]=useState(1)
+    const [url,setUrl]=useState("")
     useEffect(()=>{console.log(currentOption)},[currentOption])
     
-    function onSendUrl(){
+    function onSendUrl(event){
       if(currentOption===1){
-        
+        JSON.stringify({url:url})
+        fetch("/url",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
+          if(res.ok){
+            console.log("OK")
+          }
+        });
 
       }
       else if(currentOption===2){
@@ -122,6 +128,7 @@ export default function RemoteCommand(props) {
 
       }
 
+      event.preventDefault()
     }
 
     return (
@@ -148,9 +155,11 @@ export default function RemoteCommand(props) {
                 <Grid container spacing={3}>
                   {/* Chart */}
                   <Grid item xs={12} sm={6} md={8} lg={9}>
+                      <form onSubmit={onSendUrl}>
                     <Paper className={classes.paper}>
-                      <TextField id="filled-basic" InputLabelProps={{shrink: true}} placeholder="Enter the URL" label="URL" variant="outlined" />
+                        <TextField id="filled-basic" onChange={event=>setUrl(event.target.value)} InputLabelProps={{shrink: true}} placeholder="Enter the URL" label="URL" variant="outlined" />
                     </Paper>
+                      </form>
                   </Grid>
                   {/* Recent Deposits */}
                   <Grid item xs={12} sm={6} md={4} lg={3}>

@@ -19,3 +19,9 @@ PATH= os.path.abspath(os.getcwd())+r"\WebScraperScripts\SeleniumWebDriver\chrome
 
 driver=webdriver.Chrome(executable_path= PATH, options=options)
 driver.get(sys.argv[1])
+
+downloading=True
+dirContents=os.listdir(os.getcwd()+r"\CloudContents")
+print(dirContents)
+
+
