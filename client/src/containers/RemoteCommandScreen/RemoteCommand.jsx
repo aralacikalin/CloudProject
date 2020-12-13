@@ -110,6 +110,19 @@ export default function RemoteCommand(props) {
     const [currentOption,setCurrentOption]=useState(1)
     useEffect(()=>{console.log(currentOption)},[currentOption])
     
+    function onSendUrl(){
+      if(currentOption===1){
+        
+
+      }
+      else if(currentOption===2){
+
+      }
+      else if(currentOption===3){
+
+      }
+
+    }
 
     return (
         <div className={classes.root}>
@@ -120,8 +133,17 @@ export default function RemoteCommand(props) {
                   <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Send Download Commands
                   </Typography>
-                  <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                      (Explain the functionality and usage of this feature)
+                  <Typography variant="h4" align="center" color="textPrimary" paragraph>
+                      Pick a method and provide the URL
+                  </Typography>
+                  <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                      Download: Provide a URL that triggers a download
+                  </Typography>
+                  <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                      List: Provide a web site and all downloadable links will be listed
+                  </Typography>
+                  <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                      Torrent: Provide a torrent link and it will be downloaded
                   </Typography>
                 <Grid container spacing={3}>
                   {/* Chart */}
@@ -144,12 +166,9 @@ export default function RemoteCommand(props) {
                         onChange={(event)=>{setCurrentOption(event.target.value)}}
 
                       >
-                        <MenuItem value={1}>
-                          First
-                        </MenuItem>
-                        <MenuItem value={2}>Ten</MenuItem>
-                        <MenuItem value={3}>Twenty</MenuItem>
-                        <MenuItem value={4}>Thirty</MenuItem>
+                        <MenuItem value={1}>Download</MenuItem>
+                        <MenuItem value={2}>List</MenuItem>
+                        <MenuItem value={3}>Torrent</MenuItem>
                       </Select>
                     </FormControl>
                   </Paper>
