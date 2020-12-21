@@ -4,9 +4,12 @@ var {exec} =require("child_process");
 var fs =require("fs");
 const { setInterval } = require('timers');
 
+var authorize =require("../_helpers/authorize");
+var Role =require("../_helpers/role");
+
 
 //TODO authorization is not yet added
-router.post('/', async function(req, res, next) { 
+router.post('/',authorize(Role.Admin), async function(req, res, next) { 
     var url=req.body.url
     //TODO change this to sude python for pi
     exec(`python -u WebScraperScripts\\LinkDownloader.py ${url}`,(e,o,ee)=>{ console.log(e+o+ee)})
@@ -30,7 +33,7 @@ router.post('/', async function(req, res, next) {
                 
                 }
             })
-            if(loopCounter>20){
+            if(loopCounter>50){
                 clearInterval(loop)
                 res.sendStatus(408)
                 

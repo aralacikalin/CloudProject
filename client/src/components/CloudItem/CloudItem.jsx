@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 
 const {proxy} =require("../../../package.json")
 
+//TODO : change proxy to 127.0.0.1 from localhost
+
 
 class CloudItem extends Component {
   constructor(props){

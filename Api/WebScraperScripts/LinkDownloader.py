@@ -20,8 +20,24 @@ PATH= os.path.abspath(os.getcwd())+r"\WebScraperScripts\SeleniumWebDriver\chrome
 driver=webdriver.Chrome(executable_path= PATH, options=options)
 driver.get(sys.argv[1])
 
-downloading=True
+downloading=False
 dirContents=os.listdir(os.getcwd()+r"\CloudContents")
-print(dirContents)
+tempDownloadName=None
 
+while(not downloading):
+    time.sleep(1)
+    dirContents=os.listdir(os.getcwd()+r"\CloudContents")
+    for f in dirContents:
+        if "crdownload" in f:
+            downloading=True
+            tempDownloadName=f
+time.sleep(1)
+
+while(downloading):
+    time.sleep(1)
+    dirContents=os.listdir(os.getcwd()+r"\CloudContents")
+    if not(tempDownloadName in dirContents):
+        downloading=False
+time.sleep(3)
+driver.quit()
 
