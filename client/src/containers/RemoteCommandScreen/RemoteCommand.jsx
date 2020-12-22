@@ -114,6 +114,7 @@ export default function RemoteCommand(props) {
     const [url,setUrl]=useState("")
     const [download,setDownload]=useState(false)
     const [downloadCount,setDownloadCount]=useState(0)
+    const [notDownloading,setNotDownloading]=useState(false)
     useEffect(()=>{console.log(currentOption)},[currentOption])
 
     useEffect(() => {
@@ -126,6 +127,9 @@ export default function RemoteCommand(props) {
         fetch("/url",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
           if(res.ok){
             setDownload(true)
+          }
+          else{
+            setNotDownloading(true)
           }
         });
 
@@ -208,10 +212,15 @@ export default function RemoteCommand(props) {
                   </Grid>
                 </Grid>
                 <Snackbar open={download} autoHideDuration={6000} onClose={()=>{setDownload(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
-                      <MuiAlert onClose={()=>{setDownload(false)}} severity="success" elevation={6} variant="standard" color="success">
-                        Download Started Successfully!
-                      </MuiAlert>
-                    </Snackbar>
+                  <MuiAlert onClose={()=>{setDownload(false)}} severity="success" elevation={6} variant="standard" color="success">
+                    Download Started Successfully!
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar open={notDownloading} autoHideDuration={6000} onClose={()=>{setNotDownloading(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={()=>{setNotDownloading(false)}} severity="error" elevation={6} variant="standard" color="error">
+                    Download Failed to Start!
+                  </MuiAlert>
+                </Snackbar>
               </Container>
             </main>
         </div>
