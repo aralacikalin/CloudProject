@@ -17,6 +17,9 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import { useState } from 'react';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,14 +112,20 @@ export default function RemoteCommand(props) {
     const [key,setKey]=useState("")
     const [currentOption,setCurrentOption]=useState(1)
     const [url,setUrl]=useState("")
+    const [download,setDownload]=useState(false)
+    const [downloadCount,setDownloadCount]=useState(0)
     useEffect(()=>{console.log(currentOption)},[currentOption])
+
+    useEffect(() => {
+      fetch("/downloadingCount").then(res=>(res.json())).then(data=>{setDownloadCount(data.count)})
+    });
     
     function onSendUrl(event){
       if(currentOption===1){
         JSON.stringify({url:url})
         fetch("/url",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
           if(res.ok){
-            console.log("OK")
+            setDownload(true)
           }
         });
 
@@ -152,8 +161,17 @@ export default function RemoteCommand(props) {
                   <Typography variant="h6" align="center" color="textSecondary" paragraph>
                       Torrent: Provide a torrent link and it will be downloaded
                   </Typography>
+                  <Typography variant="h7" align="center" color="textSecondary" paragraph>
+                      (Currently only 2 dowloads can occur at the same time!)
+                  </Typography>
                 <Grid container spacing={3}>
-                  {/* Chart */}
+                  {/*Download Count*/}
+                  <Grid item xs={12}>
+                    <Paper className={classes.paper}>
+                      Current Ongoing Downloads: {downloadCount}
+                    </Paper>
+                  </Grid>
+                  {/*URL Input Field */}
                   <Grid item xs={12} sm={6} md={8} lg={9}>
                       <form onSubmit={onSendUrl}>
                     <Paper className={classes.paper}>
@@ -161,7 +179,6 @@ export default function RemoteCommand(props) {
                     </Paper>
                       </form>
                   </Grid>
-                  {/* Recent Deposits */}
                   <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Paper className={classes.paper}>
 
@@ -182,13 +199,19 @@ export default function RemoteCommand(props) {
                     </FormControl>
                   </Paper>
                   </Grid>
-                  {/* Recent Orders */}
+                  {/* List of downloadable links when its selected as a option*/}
+                  {/*can map this grid for the list*/}
                   <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      deneme3
+                      Link1
                     </Paper>
                   </Grid>
                 </Grid>
+                <Snackbar open={download} autoHideDuration={6000} onClose={()=>{setDownload(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                      <MuiAlert onClose={()=>{setDownload(false)}} severity="success" elevation={6} variant="standard" color="success">
+                        Download Started Successfully!
+                      </MuiAlert>
+                    </Snackbar>
               </Container>
             </main>
         </div>
