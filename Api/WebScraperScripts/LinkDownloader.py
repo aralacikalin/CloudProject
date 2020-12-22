@@ -24,6 +24,8 @@ downloading=False
 dirContents=os.listdir(os.getcwd()+r"\CloudContents")
 tempDownloadName=None
 
+checkCount=0
+
 while(not downloading):
     time.sleep(1)
     dirContents=os.listdir(os.getcwd()+r"\CloudContents")
@@ -31,6 +33,9 @@ while(not downloading):
         if "crdownload" in f:
             downloading=True
             tempDownloadName=f
+    checkCount+=1
+    if(checkCount>20):
+        break
 time.sleep(1)
 
 while(downloading):
