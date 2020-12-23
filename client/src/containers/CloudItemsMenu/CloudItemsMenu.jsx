@@ -6,13 +6,12 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {CloudItem} from '../../components';
-import {DropzoneDialog} from 'material-ui-dropzone'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import {CloudItem, FileInput} from '../../components';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import Cookies from "js-cookie";
 
-import Dropzone from 'react-dropzone'
+
 
 class CloudItemsMenu extends Component {
     ismounted=false
@@ -22,15 +21,13 @@ class CloudItemsMenu extends Component {
         this.state={
             items:[],
             isUploadView:false,
-            isUploadSnack:false,
-            files:[]
+            currentIp:null
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
         this.classes=this.classes.bind(this)
         this.handleUploadViewClose=this.handleUploadViewClose.bind(this)
         this.handleUploadViewOpen=this.handleUploadViewOpen.bind(this)
-        this.handleUpload=this.handleUpload.bind(this)
         this.handleSnackClose=this.handleSnackClose.bind(this)
     }
 
@@ -71,6 +68,9 @@ class CloudItemsMenu extends Component {
 
     async componentDidMount(){
         this.fetchAll();
+        fetch("/ip").then(res=>res.json()).then(data=>{this.setState({currentIp:data.ip})})
+        Cookies.set("jwt",Cookies.get("jwt"),{domain:"http://"+"192.168.1.30"+":4000"})
+        
         
     }
     componentWillUnmount(){
@@ -107,32 +107,11 @@ class CloudItemsMenu extends Component {
       this.setState({isUploadView:true})
     }
 
-    async handleUpload(){
-      if(this.state.files.length){
-        this.state.files.forEach(file=>{this.onFileUpload(file)})
-        //this.setState({isUploadView:false,isUploadSnack:true})
-      }
-
-    }
-
-    async onFileUpload(file){
-      //fetch("upload",{method:"POST",body:this.state.uploadedFile})
-      const data=new FormData()
-      console.log(file)
-      data.append("file",file)
-  
-      console.log(data)
-      await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
-    }
 
     handleSnackClose(){
       this.setState({isUploadSnack:false})
     }
 
-    onDrop(acceptedFiles){
-      var tempArray=this.state.files
-
-    }
 
     render(){
 
@@ -147,17 +126,6 @@ class CloudItemsMenu extends Component {
                         Successfully Uploaded Files!
                       </MuiAlert>
                     </Snackbar>
-                      <DropzoneDialog
-                        cancelButtonText={"cancel"}
-                        submitButtonText={"submit"}
-                        open={this.state.isUploadView}
-                        onClose={this.handleUploadViewClose}
-                        onSave={this.handleUpload}
-                        showPreviews={true}
-                        showFileNamesInPreview={true}
-                        useChipsForPreview
-                        maxFileSize={10000000000}
-                      />
                     <Container maxWidth="sm">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Cloud Items
@@ -170,24 +138,7 @@ class CloudItemsMenu extends Component {
                         <div className={this.classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                            <Dropzone onDrop={acceptedFiles => {this.setState({files:acceptedFiles})}}>
-                              {({getRootProps, getInputProps}) => (
-                                <section>
-                                  <div {...getRootProps()}>
-                                    <input multiple {...getInputProps()} />
-                                    <p>Drag 'n' drop some files here, or click to select files</p>
-                                    <h4>Files</h4>
-                                    <ul>{this.state.files.map(file=>( <li key={file.name}>
-                                  {file.name} - {file.size} bytes
-                                </li>))}</ul>
-                                  </div>
-                                </section>
-                              )}
-                            </Dropzone>
-
-                            <Button variant="outlined" color="primary" onClick={this.handleUpload}>
-                                action
-                            </Button>
+                              <FileInput/>
                             </Grid>
                             <Grid item>
                             <Button variant="outlined" color="primary">
@@ -203,7 +154,7 @@ class CloudItemsMenu extends Component {
                     <Grid container spacing={4}>
                         {this.state.items&& this.state.items.map((item) => (
                         <Grid item key={item} xs={12} sm={6} md={4}> 
-                            <CloudItem item={item}/>
+                            <CloudItem item={item} ip={"http://"+this.state.currentIp+":4000/"}/>
                         </Grid>
                         ))}
                     </Grid>

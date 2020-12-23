@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 
 const {proxy} =require("../../../package.json")
 
+//TODO : change proxy to 127.0.0.1 from localhost
+
 
 class CloudItem extends Component {
   constructor(props){
@@ -162,12 +164,15 @@ class CloudItem extends Component {
           </Typography>
         </CardContent>
         <CardActions>
-        <a style={{textDecoration:"none"}}  href={`${proxy}download/${this.props.item}`}>
+        <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
 
           <Button size="small" color="primary">
             <GetAppIcon/>
           </Button>
         </a>
+          <Button size="small" onClick={this.preventDefault} color="primary">
+            <GetAppIcon/>
+          </Button>
 
           <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
             <Button size="small" color="primary">

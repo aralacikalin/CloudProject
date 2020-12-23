@@ -350,7 +350,7 @@ export default function LoginScreen(props) {
               id="username"
               label="User Name"
               name="username"
-              autoComplete="username"
+              autoComplete=""
               autoFocus
               onChange={event=>setUsername(event.target.value)}
             />
@@ -375,6 +375,7 @@ export default function LoginScreen(props) {
               variant="contained"
               color="primary"
               className={classes.submit}
+              type="submit"
               onClick={(event)=>{handleClick(event)}}
             >
               Sign In

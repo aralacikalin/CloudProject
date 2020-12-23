@@ -18,6 +18,9 @@ var userInfoRouter = require('./routes/userinfo');
 var authentication = require('./Autherization/users.controller');
 var checkAuth = require('./routes/checkAuth');
 var logoutRouter = require('./routes/logout');
+var ipRouter = require('./routes/ip');
+var urlDownloadRouter = require('./routes/urlDownload');
+var donwloadingCountRouter = require('./routes/donwloadingCount');
 
 var app = express();
 var cors=require("cors")
@@ -48,7 +51,10 @@ app.use('/content', contentRouter);
 app.use('/userinfo', userInfoRouter);
 app.use('/checkauth', checkAuth);
 app.use('/logout', logoutRouter);
+app.use('/ip', ipRouter);
+app.use('/url', urlDownloadRouter);
 
+app.use('/downloadingCount', donwloadingCountRouter);
 app.use('/login', authentication);
 
 

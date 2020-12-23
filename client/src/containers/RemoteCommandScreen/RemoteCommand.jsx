@@ -17,6 +17,9 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import { useState } from 'react';
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,8 +111,38 @@ export default function RemoteCommand(props) {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const [key,setKey]=useState("")
     const [currentOption,setCurrentOption]=useState(1)
+    const [url,setUrl]=useState("")
+    const [download,setDownload]=useState(false)
+    const [downloadCount,setDownloadCount]=useState(0)
+    const [notDownloading,setNotDownloading]=useState(false)
     useEffect(()=>{console.log(currentOption)},[currentOption])
+
+    useEffect(() => {
+      fetch("/downloadingCount").then(res=>(res.json())).then(data=>{setDownloadCount(data.count)})
+    });
     
+    function onSendUrl(event){
+      if(currentOption===1){
+        JSON.stringify({url:url})
+        fetch("/url",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
+          if(res.ok){
+            setDownload(true)
+          }
+          else{
+            setNotDownloading(true)
+          }
+        });
+
+      }
+      else if(currentOption===2){
+
+      }
+      else if(currentOption===3){
+
+      }
+
+      event.preventDefault()
+    }
 
     return (
         <div className={classes.root}>
@@ -120,17 +153,36 @@ export default function RemoteCommand(props) {
                   <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Send Download Commands
                   </Typography>
-                  <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                      (Explain the functionality and usage of this feature)
+                  <Typography variant="h4" align="center" color="textPrimary" paragraph>
+                      Pick a method and provide the URL
+                  </Typography>
+                  <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                      Download: Provide a URL that triggers a download
+                  </Typography>
+                  <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                      List: Provide a web site and all downloadable links will be listed
+                  </Typography>
+                  <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                      Torrent: Provide a torrent link and it will be downloaded
+                  </Typography>
+                  <Typography variant="h7" align="center" color="textSecondary" paragraph>
+                      (Currently only 2 dowloads can occur at the same time!)
                   </Typography>
                 <Grid container spacing={3}>
-                  {/* Chart */}
-                  <Grid item xs={12} sm={6} md={8} lg={9}>
+                  {/*Download Count*/}
+                  <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      <TextField id="filled-basic" InputLabelProps={{shrink: true}} placeholder="Enter the URL" label="URL" variant="outlined" />
+                      Current Ongoing Downloads: {downloadCount}
                     </Paper>
                   </Grid>
-                  {/* Recent Deposits */}
+                  {/*URL Input Field */}
+                  <Grid item xs={12} sm={6} md={8} lg={9}>
+                      <form onSubmit={onSendUrl}>
+                    <Paper className={classes.paper}>
+                        <TextField id="filled-basic" onChange={event=>setUrl(event.target.value)} InputLabelProps={{shrink: true}} placeholder="Enter the URL" label="URL" variant="outlined" />
+                    </Paper>
+                      </form>
+                  </Grid>
                   <Grid item xs={12} sm={6} md={4} lg={3}>
                   <Paper className={classes.paper}>
 
@@ -144,23 +196,31 @@ export default function RemoteCommand(props) {
                         onChange={(event)=>{setCurrentOption(event.target.value)}}
 
                       >
-                        <MenuItem value={1}>
-                          First
-                        </MenuItem>
-                        <MenuItem value={2}>Ten</MenuItem>
-                        <MenuItem value={3}>Twenty</MenuItem>
-                        <MenuItem value={4}>Thirty</MenuItem>
+                        <MenuItem value={1}>Download</MenuItem>
+                        <MenuItem value={2}>List</MenuItem>
+                        <MenuItem value={3}>Torrent</MenuItem>
                       </Select>
                     </FormControl>
                   </Paper>
                   </Grid>
-                  {/* Recent Orders */}
+                  {/* List of downloadable links when its selected as a option*/}
+                  {/*can map this grid for the list*/}
                   <Grid item xs={12}>
                     <Paper className={classes.paper}>
-                      deneme3
+                      Link1
                     </Paper>
                   </Grid>
                 </Grid>
+                <Snackbar open={download} autoHideDuration={6000} onClose={()=>{setDownload(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={()=>{setDownload(false)}} severity="success" elevation={6} variant="standard" color="success">
+                    Download Started Successfully!
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar open={notDownloading} autoHideDuration={6000} onClose={()=>{setNotDownloading(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={()=>{setNotDownloading(false)}} severity="error" elevation={6} variant="standard" color="error">
+                    Download Failed to Start!
+                  </MuiAlert>
+                </Snackbar>
               </Container>
             </main>
         </div>
