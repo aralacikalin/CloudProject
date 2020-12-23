@@ -162,14 +162,20 @@ class CloudItem extends Component {
 
   render(){
 
+    var name=this.props.item
+    var nameArray =name.split(".")
+    nameArray.pop()
+    var nameWOExt=nameArray.join(".")
+
 
     return(
+      
       
       <Card className={this.classes.card}>
         {this.renderCardMedia()}
         <CardContent className={this.classes.cardContent}>
           <Typography gutterBottom variant="h5" component="h2">
-            {this.props.item}
+            {nameWOExt}
           </Typography>
           <Typography >
             <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
