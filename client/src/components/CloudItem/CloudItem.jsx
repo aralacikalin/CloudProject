@@ -148,6 +148,18 @@ class CloudItem extends Component {
     }
   }
 
+  renderDetails=()=>{
+    if(parseFloat(this.props.size).toFixed(3)>1000){
+      return(<div>{parseFloat(this.props.size/1000).toPrecision(2)} GB </div>)
+    }
+    else if(parseInt(this.props.size).toFixed(3)>0) {
+      return(<div>{parseFloat(this.props.size).toFixed(2)} MB</div>)
+    }
+    else if(parseInt(this.props.size)<=0){
+      return(<div>{parseFloat(this.props.size).toFixed(3)*1000} KB</div>)
+    }
+  }
+
   render(){
 
 
@@ -159,8 +171,9 @@ class CloudItem extends Component {
           <Typography gutterBottom variant="h5" component="h2">
             {this.props.item}
           </Typography>
-          <Typography>
-            Insert Possible File Information (like size, type)
+          <Typography >
+            <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
+            <div style={{display:"flex"}}>Type: &nbsp; {this.props.ext}</div> 
           </Typography>
         </CardContent>
         <CardActions>

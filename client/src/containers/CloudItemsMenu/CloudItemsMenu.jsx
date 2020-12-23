@@ -153,8 +153,8 @@ class CloudItemsMenu extends Component {
                     {/* End hero unit */}
                     <Grid container spacing={4}>
                         {this.state.items&& this.state.items.map((item) => (
-                        <Grid item key={item} xs={12} sm={6} md={4}> 
-                            <CloudItem item={item} ip={"http://"+this.state.currentIp+":4000/"}/>
+                        <Grid item key={item[0]} xs={12} sm={6} md={4}> 
+                            <CloudItem item={item[0]} size={item[1]} ext={item[2]} ip={"http://"+this.state.currentIp+":4000/"}/>
                         </Grid>
                         ))}
                     </Grid>
