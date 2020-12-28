@@ -15,7 +15,6 @@ options.add_experimental_option("prefs", {
 
 PATH= os.path.abspath(os.getcwd())+r"\WebScraperScripts\SeleniumWebDriver\chromedriver"
 
-#TODO automaticly close chrome after downloading.
 
 driver=webdriver.Chrome(executable_path= PATH, options=options)
 driver.get(sys.argv[1])

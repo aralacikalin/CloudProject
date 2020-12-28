@@ -21,6 +21,7 @@ var logoutRouter = require('./routes/logout');
 var ipRouter = require('./routes/ip');
 var urlDownloadRouter = require('./routes/urlDownload');
 var donwloadingCountRouter = require('./routes/donwloadingCount');
+var torrentDownloadRouter=require("./routes/torrentDownload")
 
 var app = express();
 var cors=require("cors")
@@ -53,6 +54,7 @@ app.use('/checkauth', checkAuth);
 app.use('/logout', logoutRouter);
 app.use('/ip', ipRouter);
 app.use('/url', urlDownloadRouter);
+app.use('/torrent', torrentDownloadRouter);
 
 app.use('/downloadingCount', donwloadingCountRouter);
 app.use('/login', authentication);
