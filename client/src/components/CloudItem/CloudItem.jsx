@@ -127,7 +127,7 @@ class CloudItem extends Component {
         <CardMedia
           className={this.classes.cardMedia}
           component="img"
-          src={`/cloudcontents/${this.props.item}`}
+          src={this.state.url}
           title={this.props.item}
         />
 
