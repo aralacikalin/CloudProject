@@ -44,7 +44,7 @@ class CloudItems extends Component {
                             </Grid>
                         </Grid>
                     <Grid container spacing={4}>
-                        {this.props.items&& this.props.items.filter(item=>item[0].includes(this.state.search.trim())||item[2].includes(this.state.search.trim())).map((item) => (
+                        {this.props.items&& this.props.items.filter(item=>item[0].toLowerCase().includes(this.state.search.toLowerCase().trim())||item[2].includes(this.state.search.trim())).map((item) => (
                         <Grid item key={item[0]} xs={12} sm={6} md={4}> 
                             <CloudItem item={item[0]} size={item[1]} ext={item[2]} ip={"http://"+this.props.ip+":4000/"}/>
                         </Grid>
