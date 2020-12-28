@@ -68,6 +68,7 @@ class CloudItem extends Component {
   }));
   classes =()=> this.useStyles();
 
+  
   componentDidMount(){
     const controller = new AbortController()
     const signal = controller.signal
@@ -126,7 +127,7 @@ class CloudItem extends Component {
         <CardMedia
           className={this.classes.cardMedia}
           component="img"
-          src={this.state.url}
+          src={`/cloudcontents/${this.props.item}`}
           title={this.props.item}
         />
 

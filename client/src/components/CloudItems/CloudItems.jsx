@@ -1,15 +1,12 @@
 
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
+
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Container from '@material-ui/core/Container';
-import {CloudItem, FileInput} from '../../components';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import Cookies from "js-cookie";
+import {CloudItem} from '../../components';
+
 import { TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
