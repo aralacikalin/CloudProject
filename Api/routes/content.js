@@ -19,16 +19,19 @@ router.get('/', authorize(Role.Admin) ,function(req, res, next) {
     files.forEach((val,i)=>{
         var size=fs.statSync("./CloudContents/"+val).size
         var ext=path.extname("./CloudContents/"+val)
-        if(ext.split(".")[1]!=undefined){
+        if(ext.split(".")[1]!=undefined &&ext.split(".")[1]!="zip"){
 
             fileArray.push([val,(size/(1024*1024)),ext.split(".")[1]])
         }
-        else{
+        else if(ext.split(".")[1]==undefined){
             var zipName=val+'.zip'
             zipFolder('./CloudContents/'+val,"./CloudContents/"+zipName )
-
+            size=fs.statSync("./CloudContents/"+zipName).size
+            ext=path.extname("./CloudContents/"+zipName)
+            fileArray.push([zipName,(size/(1024*1024)),ext.split(".")[1]])
         }
     })
+    console.log(fileArray)
     res.send(fileArray)
 
     /*
