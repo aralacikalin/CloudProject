@@ -31,7 +31,6 @@ router.get('/', authorize(Role.Admin) ,function(req, res, next) {
             fileArray.push([zipName,(size/(1024*1024)),ext.split(".")[1]])
         }
     })
-    console.log(fileArray)
     res.send(fileArray)
 
     /*
