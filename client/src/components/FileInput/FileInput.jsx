@@ -94,7 +94,7 @@ class FileInput extends Component {
 
   LinearProgressWithLabel() {
 
-    if(this.state.uploadProgress!=0){
+    if(this.state.uploadProgress!==0){
 
         return (
           <Box display="flex" alignItems="center">

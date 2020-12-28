@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {CloudItem, FileInput} from '../../components';
+import {CloudItems, FileInput} from '../../components';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Cookies from "js-cookie";
@@ -21,7 +21,8 @@ class CloudItemsMenu extends Component {
         this.state={
             items:[],
             isUploadView:false,
-            currentIp:null
+            currentIp:null,
+            search:""
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
@@ -149,16 +150,7 @@ class CloudItemsMenu extends Component {
                         </div>
                     </Container>
                     </div>
-                    <Container className={this.classes.cardGrid} maxWidth="md">
-                    {/* End hero unit */}
-                    <Grid container spacing={4}>
-                        {this.state.items&& this.state.items.map((item) => (
-                        <Grid item key={item[0]} xs={12} sm={6} md={4}> 
-                            <CloudItem item={item[0]} size={item[1]} ext={item[2]} ip={"http://"+this.state.currentIp+":4000/"}/>
-                        </Grid>
-                        ))}
-                    </Grid>
-                    </Container>
+                    <CloudItems items={this.state.items} ip={this.state.currentIp}/>
                 </main>
                 </React.Fragment>
         );//lower md value to make the rows have more files
