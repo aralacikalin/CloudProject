@@ -10,27 +10,30 @@ const zipFolder = require('folder-zip-sync')
 
 
 /* item full name in the url is needed ex: download/myFile.txt */
-router.get('/', authorize(Role.Admin) ,function(req, res, next) { 
+router.get('/:folder(*)', authorize(Role.Admin) ,function(req, res, next) { 
 
+    let folder=req.params.folder
+
+    let subFolder="./CloudContents/"+folder
     
     var fileArray =[]
 
-    var files=fs.readdirSync("./CloudContents")
+    var files=fs.readdirSync(subFolder)
 
 
 
     files.forEach((val,i)=>{
-        var size=fs.statSync("./CloudContents/"+val).size
-        var ext=path.extname("./CloudContents/"+val)
+        var size=fs.statSync(subFolder+"/"+val).size
+        var ext=path.extname(subFolder+"/"+val)
         if(ext.split(".")[1]!=undefined){
 
             fileArray.push([val,(size/(1024*1024)),ext.split(".")[1]])
         }
         else{
-            var subFiles = fs.readdirSync("./CloudContents/"+val)
+            var subFiles = fs.readdirSync(subFolder+"/"+val)
             var totalSize=0
             subFiles.forEach((v,i)=>{
-                totalSize+=fs.statSync("./CloudContents/"+val+"/"+v).size
+                totalSize+=fs.statSync(subFolder+"/"+val+"/"+v).size
             })
             fileArray.push([val,(totalSize/(1024*1024)),"folder"])
 
@@ -38,17 +41,7 @@ router.get('/', authorize(Role.Admin) ,function(req, res, next) {
     })
     res.send(fileArray)
 
-    /*
-    fs.readdir("./CloudContents",(err,files)=>{
-        files.forEach((val,i)=>{
-            fs.stat("./CloudContents/"+val,(e,stats)=>{
-                var fileStat= [val,(stats.size/ (1024*1024))]
-                fileArray.push(fileStat)
-            })
-        })
-        
-        res.send(fileArray)
-    })*/
+
 });
 
 module.exports = router;
