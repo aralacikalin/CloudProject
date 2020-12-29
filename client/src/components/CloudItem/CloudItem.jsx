@@ -15,6 +15,18 @@ const {proxy} =require("../../../package.json")
 
 //TODO : change proxy to 127.0.0.1 from localhost
 
+const accordionStyle={
+  backgroundColor:'gray',
+  borderStyle:"groove",
+  borderBottom:"none",
+  borderTop:"none"
+}
+const collapsableStyle={
+  borderStyle:"groove",
+  borderLeft:"none",
+  borderRight:"none",
+  borderTop:"none"
+}
 
 class CloudItem extends Component {
   constructor(props){
@@ -221,9 +233,9 @@ class CloudItem extends Component {
           (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
-              <Paper elevation={30} style={{borderStyle:"groove",borderLeft:"none",borderRight:"none",borderTop:"none"}}>
+              <Paper elevation={30} style={collapsableStyle}>
                 {this.state.subContent.map(item=>(
-                <AccordionDetails style={{backgroundColor:'gray',borderStyle:"groove",borderBottom:"none",borderTop:"none"}}><CloudItem item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
+                <AccordionDetails style={accordionStyle}><CloudItem item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
                 ))}
               </Paper>
           </Accordion>
