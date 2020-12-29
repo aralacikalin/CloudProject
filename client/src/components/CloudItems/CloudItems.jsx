@@ -32,7 +32,7 @@ class CloudItems extends Component {
         return (
             <React.Fragment>
                 <CssBaseline />
-                <Container  >
+                <Container maxWidth="xl">
                     
                     {/* End hero unit */}
                     <Container maxWidth="sm" >
