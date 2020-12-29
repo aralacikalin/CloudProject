@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Link } from 'react-router-dom';
-import { Accordion, AccordionDetails, AccordionSummary } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Paper } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const {proxy} =require("../../../package.json")
@@ -221,11 +221,11 @@ class CloudItem extends Component {
           (
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
-            
-            {this.state.subContent.map(item=>(
-            <AccordionDetails><CloudItem item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
-          ))}
-            
+              <Paper elevation={30} style={{borderStyle:"groove",borderLeft:"none",borderRight:"none",borderTop:"none"}}>
+                {this.state.subContent.map(item=>(
+                <AccordionDetails style={{backgroundColor:'gray',borderStyle:"groove",borderBottom:"none",borderTop:"none"}}><CloudItem item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
+                ))}
+              </Paper>
           </Accordion>
 
           )
