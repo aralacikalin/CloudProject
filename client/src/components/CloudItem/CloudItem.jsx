@@ -8,11 +8,25 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Link } from 'react-router-dom';
+import { Accordion, AccordionDetails, AccordionSummary, Paper } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const {proxy} =require("../../../package.json")
 
 //TODO : change proxy to 127.0.0.1 from localhost
 
+const accordionStyle={
+  backgroundColor:'gray',
+  borderStyle:"groove",
+  borderBottom:"none",
+  borderTop:"none"
+}
+const collapsableStyle={
+  borderStyle:"groove",
+  borderLeft:"none",
+  borderRight:"none",
+  borderTop:"none"
+}
 
 class CloudItem extends Component {
   constructor(props){
@@ -26,7 +40,10 @@ class CloudItem extends Component {
 
     this.state={
       url:"",
-      fileType:""
+      fileType:"",
+      subContent:[],
+      subFolder:""
+
     }
   }
 
@@ -70,28 +87,35 @@ class CloudItem extends Component {
 
   
   componentDidMount(){
-    const controller = new AbortController()
-    const signal = controller.signal
-    fetch(`/cloudcontents/${this.props.item}`,{signal:signal}).then((res)=>{
-      if(res.headers.get("content-type").split(";")[0].includes("image")){
-        this.setState({fileType:"img"})
-      }
-      else{
-        this.setState({fileType:res.headers.get("content-type").split(";")[0]})
-      }
-      console.log(res.headers.get("content-type").split(";")[0])
-      if(res.headers.get("content-length")<200000000){
+    if(this.props.ext!=="folder"){
 
-        return(res.blob())
-      }
-      controller.abort()
-    }).then(img=>{
-      if (img){
-
-        var u=URL.createObjectURL(img)
-        this.setState({url:u})
-      }
-    })
+      const controller = new AbortController()
+      const signal = controller.signal
+      fetch(`/cloudcontents/${this.props.item}`,{signal:signal}).then((res)=>{
+        if(res.headers.get("content-type").split(";")[0].includes("image")){
+          this.setState({fileType:"img"})
+        }
+        else{
+          this.setState({fileType:res.headers.get("content-type").split(";")[0]})
+        }
+        console.log(res.headers.get("content-type").split(";")[0])
+        if(res.headers.get("content-length")<200000000){
+  
+          return(res.blob())
+        }
+        controller.abort()
+      }).then(img=>{
+        if (img){
+  
+          var u=URL.createObjectURL(img)
+          this.setState({url:u})
+        }
+      })
+    }else{
+      fetch(`/subcontent/${this.props.item}`).then(res=>(res.json())).then(data=>{
+        this.setState({subContent:data})
+      })
+    }
   }
 
   preventDefault(event){
@@ -165,44 +189,60 @@ class CloudItem extends Component {
 
     var name=this.props.item
     var nameArray =name.split(".")
-    nameArray.pop()
+    if(this.props.ext!=="folder"){
+      nameArray.pop()
+    }
+
     var nameWOExt=nameArray.join(".")
+    nameWOExt=nameWOExt.split("/").pop()
 
 
-    return(
-      
-      
-      <Card className={this.classes.card}>
-        {this.renderCardMedia()}
-        <CardContent className={this.classes.cardContent}>
-          <Typography gutterBottom variant="h5" component="h2">
-            {nameWOExt}
-          </Typography>
-          <Typography >
-            <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
-            <div style={{display:"flex"}}>Type: &nbsp; {this.props.ext}</div> 
-          </Typography>
-        </CardContent>
-        <CardActions>
-        <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
 
-          <Button size="small" color="primary">
-            <GetAppIcon/>
-          </Button>
-        </a>
-          <Button size="small" onClick={this.preventDefault} color="primary">
-            <GetAppIcon/>
-          </Button>
 
-          <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
+
+      return(
+        <Card className={this.classes.card}>
+          {this.renderCardMedia()}
+          <CardContent className={this.classes.cardContent}>
+            <Typography gutterBottom variant="h5" component="h2">
+              {nameWOExt}
+            </Typography>
+            <Typography >
+              <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
+              <div style={{display:"flex"}}>Type: &nbsp; {this.props.ext}</div> 
+            </Typography>
+          </CardContent>
+          {this.props.ext!=="folder"?(<CardActions>
+          <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
+  
             <Button size="small" color="primary">
-              See File
+              <GetAppIcon/>
             </Button>
-
           </a>
-        </CardActions>
-      </Card>
-    );
+            <Button size="small" onClick={this.preventDefault} color="primary">
+              <GetAppIcon/>
+            </Button>
+  
+            <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
+              <Button size="small" color="primary">
+                See File
+              </Button>
+  
+            </a>
+          </CardActions>):
+          (
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
+              <Paper elevation={30} style={collapsableStyle}>
+                {this.state.subContent.map(item=>(
+                <AccordionDetails style={accordionStyle}><CloudItem item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
+                ))}
+              </Paper>
+          </Accordion>
+
+          )
+      }</Card>
+      );
 
 
     /*
