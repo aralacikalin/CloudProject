@@ -11,12 +11,17 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.keys import Keys
 
 
+
 PATH= os.path.abspath(os.getcwd())+r"\WebScraperScripts\SeleniumWebDriver\geckodriver"
 fp = webdriver.FirefoxProfile(os.path.abspath(os.getcwd())+r"\WebScraperScripts\SeleniumWebDriver\wn4kfhhq.default-release")
 driver=webdriver.Firefox(executable_path= PATH,firefox_profile=fp)
 
 driver.get(sys.argv[1])
 #for making the browser in focus for pressing enter
+
+downloading=False
+dirContents=os.listdir(os.getcwd()+r"\TorrentDownloads")
+tempDownloadName=None
 
 
 links=driver.find_elements_by_xpath('.//a')
@@ -25,33 +30,29 @@ for link in links:
         link.click()
         break
 
-time.sleep(5)
-
-
-
-
-#TODO: Check if download has started or not
+time.sleep(2)
 
 try:
     driver.switch_to.window(driver.window_handles[0])
 except Exception:
     print("no other tab")
 
+checkCount=0
+while(not downloading):
+    newDirContents=os.listdir(os.getcwd()+r"\TorrentDownloads")
+    if(newDirContents!=dirContents):
+        downloading=True
+        break
+    if(checkCount>20):
+        break
+    checkCount+=1
+    time.sleep(1)
+
+if(downloading):
+    print("OK")
+else:
+    print("Download may not have started")
 
 
-try:
-    WebDriverWait(driver, 10).until(EC.alert_is_present(),
-                                   'Timed out waiting for PA creation ' +
-                                   'confirmation popup to appear.')
-
-    time.sleep(5)
-    
-
-    alert = driver.switch_to.alert
-    alert.accept()
-    print("alert accepted")
-except TimeoutException:
-    print("no alert")
-print("OK")
 
 driver.quit()
