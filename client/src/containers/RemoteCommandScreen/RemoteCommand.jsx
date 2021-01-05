@@ -2,6 +2,7 @@
 import React, { Component, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
   
 import clsx from 'clsx';
 
@@ -115,6 +116,8 @@ export default function RemoteCommand(props) {
     const [download,setDownload]=useState(false)
     const [downloadCount,setDownloadCount]=useState(0)
     const [notDownloading,setNotDownloading]=useState(false)
+    const [isStarting,setIsStarting]=useState(false)
+    const [torrentNotStarted,setTorrentNotStarted]=useState(false)
     useEffect(()=>{console.log(currentOption)},[currentOption])
 
     useEffect(() => {
@@ -124,20 +127,34 @@ export default function RemoteCommand(props) {
     function onSendUrl(event){
       if(currentOption===1){
         JSON.stringify({url:url})
+        setIsStarting(true)
         fetch("/url",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
           if(res.ok){
             setDownload(true)
+            setIsStarting(false)
           }
           else{
             setNotDownloading(true)
+            setIsStarting(false)
           }
         });
-
+        
       }
       else if(currentOption===2){
-
+        
       }
       else if(currentOption===3){
+        setIsStarting(true)
+        fetch("/torrent",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
+          if(res.ok){
+            setDownload(true)
+            setIsStarting(false)
+          }
+          else{
+            setTorrentNotStarted(true)
+            setIsStarting(false)
+          }
+        })
 
       }
 
@@ -219,6 +236,16 @@ export default function RemoteCommand(props) {
                 <Snackbar open={notDownloading} autoHideDuration={6000} onClose={()=>{setNotDownloading(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
                   <MuiAlert onClose={()=>{setNotDownloading(false)}} severity="error" elevation={6} variant="standard" color="error">
                     Download Failed to Start!
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar open={torrentNotStarted} autoHideDuration={7000} onClose={()=>{setTorrentNotStarted(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={()=>{setTorrentNotStarted(false)}} severity="error" elevation={6} variant="standard" color="error">
+                    Torrent Download May not have Started!
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar open={isStarting} onClose={()=>{setIsStarting(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert icon={false} onClose={()=>{setIsStarting(false)}}  severity="info" elevation={6} variant="standard" color="info">
+                    <CircularProgress size={17} style={{display:"inline-block",verticalAlign:"middle",marginRight:"12px"}} /> Starting Download!
                   </MuiAlert>
                 </Snackbar>
               </Container>
