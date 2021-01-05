@@ -384,6 +384,7 @@ class CloudItem extends Component {
           )
       }</Card>
       );
+      //TODO: remove deleted item from display
 
 
     /*
