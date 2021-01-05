@@ -22,7 +22,6 @@ class CloudItemsMenu extends Component {
             items:[],
             isUploadView:false,
             currentIp:null,
-            search:""
         }
         this.fetchAll=this.fetchAll.bind(this)
         this.useStyles=this.useStyles.bind(this)
@@ -30,6 +29,9 @@ class CloudItemsMenu extends Component {
         this.handleUploadViewClose=this.handleUploadViewClose.bind(this)
         this.handleUploadViewOpen=this.handleUploadViewOpen.bind(this)
         this.handleSnackClose=this.handleSnackClose.bind(this)
+    }
+    refreshItems=()=>{
+      this.fetchAll()
     }
 
     useStyles = ()=> makeStyles((theme) => ({
@@ -150,7 +152,7 @@ class CloudItemsMenu extends Component {
                         </div>
                     </Container>
                     </div>
-                    <CloudItems items={this.state.items} ip={this.state.currentIp}/>
+                    <CloudItems refresh={this.refreshItems} items={this.state.items} ip={this.state.currentIp}/>
                 </main>
                 </React.Fragment>
         );//lower md value to make the rows have more files

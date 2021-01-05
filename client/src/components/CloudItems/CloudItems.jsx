@@ -11,6 +11,8 @@ import { TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 
 
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 
 class CloudItems extends Component {
@@ -18,13 +20,19 @@ class CloudItems extends Component {
         super(props)
 
         this.state={
-            search:""
+            search:"",
+            isDeleteAlert:false
         }
 
     }
 
+    handleDeleteConfirmationAlertClose=()=>{
+        this.setState({isDeleteAlert:false})
+    }
 
-
+    isDeleted=()=>{
+        this.setState({isDeleteAlert:true})
+    }
 
 
     render(){
@@ -49,11 +57,17 @@ class CloudItems extends Component {
                     <Grid container spacing={4}>
                         {this.props.items&& this.props.items.filter(item=>item[0].toLowerCase().includes(this.state.search.toLowerCase().trim())||item[2].includes(this.state.search.trim())).map((item) => (
                         <Grid item key={item[0]} xs={12} sm={6} md={4} lg={3}> 
-                            <CloudItem item={item[0]} size={item[1]} ext={item[2]} ip={"http://"+this.props.ip+":4000/"}/>
+                            <CloudItem refresh={this.props.refresh} isDeleted={this.isDeleted} item={item[0]} size={item[1]} ext={item[2]} ip={"http://"+this.props.ip+":4000/"}/>
+                            
                         </Grid>
                         ))}
                     </Grid>
                     </Container>
+                    <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                        <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
+                            Deleted Successfully!
+                        </MuiAlert>
+                    </Snackbar>
                 </React.Fragment>
         );//lower md value to make the rows have more files
     }

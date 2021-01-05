@@ -224,6 +224,8 @@ class CloudItem extends Component {
         this.setState({isDeleted:true})
         this.setState({isDeletePopup:false})
         this.setState({isDeleteAlert:true})
+        this.props.isDeleted()
+        this.props.refresh()
       }
       else{
         this.setState({isNotDeleted:true})
@@ -237,6 +239,8 @@ class CloudItem extends Component {
         this.setState({isDeleted:true})
         this.setState({isDeletePopup:false})
         this.setState({isDeleteAlert:true})
+        this.props.refresh()
+        this.props.isDeleted()
       }
       else{
         this.setState({isNotDeleted:true})
@@ -260,6 +264,8 @@ class CloudItem extends Component {
 
 
 
+
+    if(!this.state.isDeleted){
 
       return(
         <Card className={this.classes.card}>
@@ -341,7 +347,7 @@ class CloudItem extends Component {
             <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
               <Paper elevation={30} style={collapsableStyle}>
                 {this.state.subContent.map(item=>(
-                <AccordionDetails style={accordionStyle}><CloudItem item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
+                <AccordionDetails style={accordionStyle}><CloudItem refresh={this.props.refresh} isDeleted={this.props.isDeleted} item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
                 ))}
               </Paper>
               {/* POPUPS AND ALERTS */}
@@ -384,8 +390,10 @@ class CloudItem extends Component {
           )
       }</Card>
       );
-      //TODO: remove deleted item from display
-
+    }
+    else{
+      return(null)
+    }
 
     /*
     return (
