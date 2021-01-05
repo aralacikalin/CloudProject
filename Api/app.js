@@ -23,6 +23,8 @@ var urlDownloadRouter = require('./routes/urlDownload');
 var donwloadingCountRouter = require('./routes/donwloadingCount');
 var torrentDownloadRouter=require("./routes/torrentDownload");
 var subFolderContentRounter=require("./routes/subFolderContent");
+var deleteItemRouter=require("./routes/deleteItem");
+var deleteFolderRouter=require("./routes/deleteFolder");
 
 var app = express();
 var cors=require("cors")
@@ -57,6 +59,8 @@ app.use('/ip', ipRouter);
 app.use('/url', urlDownloadRouter);
 app.use('/torrent', torrentDownloadRouter);
 app.use('/subcontent', subFolderContentRounter);
+app.use('/delete', deleteItemRouter);
+app.use('/deletefolder', deleteFolderRouter);
 
 app.use('/downloadingCount', donwloadingCountRouter);
 app.use('/login', authentication);
