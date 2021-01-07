@@ -439,6 +439,8 @@ class CloudItem extends Component {
                 </ListItemText>
                 
               </CardContent>
+              </ListItem>
+
               {this.props.ext!=="folder"?(<CardActions>
               <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
       
@@ -446,6 +448,9 @@ class CloudItem extends Component {
                   <GetAppIcon/>
                 </Button>
               </a>
+              <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
+                <DeleteIcon/>
+              </Button>
               
                 <Button size="small" onClick={this.preventDefault} color="primary">
                   <GetAppIcon/>
@@ -494,14 +499,14 @@ class CloudItem extends Component {
                     </MuiAlert>
                   </Snackbar>
               </CardActions>):(null)}
-              <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
-                <DeleteIcon/>
-              </Button>
-              </ListItem>
+              
               {this.props.ext==="folder"?(
                 /*FOLDER INSIDE CLOUD IS RENDERED HERE*/
                 <div>
     
+                <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
+                  <DeleteIcon/>
+                </Button>
               <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
                   <Paper elevation={30} style={collapsableStyle}>
@@ -547,6 +552,7 @@ class CloudItem extends Component {
                 </div>
     
               ):(null)
+              //TODO: if this is the final version of the list view delete this null and combine 2 ? statements
           }
           </Paper>
         );
