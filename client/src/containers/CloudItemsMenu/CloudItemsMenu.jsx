@@ -141,7 +141,7 @@ class CloudItemsMenu extends Component {
                         <div className={this.classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
                             <Grid item>
-                              <FileInput/>
+                              <FileInput refresh={this.refreshItems}/>
                             </Grid>
                             <Grid item>
                             <Button variant="outlined" color="primary">

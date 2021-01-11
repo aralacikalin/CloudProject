@@ -12,7 +12,7 @@ var Role =require("../_helpers/role");
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/')
+      cb(null, 'CloudContents/')
     },
     filename: function (req, file, cb) {
       cb(null,file.originalname) //Appending file original name

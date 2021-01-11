@@ -9,7 +9,7 @@ var Role =require("../_helpers/role");
 
 
 //TODO authorization is not yet added
-router.post('/', async function(req, res, next) { 
+router.post('/',authorize(Role.Admin), async function(req, res, next) { 
     var url=req.body.url
     var index=req.body.index
     //TODO change this to sude python for pi

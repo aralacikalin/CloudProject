@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { CssBaseline, TextField, Typography } from '@material-ui/core';
+import { ButtonBase, CssBaseline, TextField, Typography } from '@material-ui/core';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -93,6 +93,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
+  paperLink: {
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
   fixedHeight: {
     height: 240,
   },
@@ -118,6 +123,9 @@ export default function RemoteCommand(props) {
     const [notDownloading,setNotDownloading]=useState(false)
     const [isStarting,setIsStarting]=useState(false)
     const [torrentNotStarted,setTorrentNotStarted]=useState(false)
+    const [links,setLinks]=useState([])
+    const [isListing,setIsListing]=useState(false)
+    const [listParent,setListParent]=useState("")
     useEffect(()=>{console.log(currentOption)},[currentOption])
 
     useEffect(() => {
@@ -141,6 +149,18 @@ export default function RemoteCommand(props) {
         
       }
       else if(currentOption===2){
+        setIsListing(true)
+        setListParent(url)
+        setLinks([])
+        fetch("/listlinks",{method:"post",body:JSON.stringify({url:url}),headers:{ "Content-Type": "application/json" }}).then(res=>{
+          if(res.ok){
+            setIsListing(false)
+            return(res.json())
+          }
+          else{
+            setIsListing(false)
+          }
+        }).then(data=>{setLinks(data)})
         
       }
       else if(currentOption===3){
@@ -161,11 +181,25 @@ export default function RemoteCommand(props) {
       event.preventDefault()
     }
 
+    function onListItemClick(index,itemUrl){
+      setIsStarting(true)
+      fetch("/downloadlist",{method:"post",body:JSON.stringify({url:itemUrl,index:index}),headers:{ "Content-Type": "application/json" }}).then(res=>{
+        if(res.ok){
+          setDownload(true)
+          setIsStarting(false)
+        }
+        else{
+          setTorrentNotStarted(true)
+          setIsStarting(false)
+        }
+      })
+
+
+    }
+
     return (
         <div className={classes.root}>
             <CssBaseline/>
-            <main className={classes.content}>
-              <div />
                 <Container maxWidth="lg" className={classes.container}>
                   <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Send Download Commands
@@ -222,11 +256,24 @@ export default function RemoteCommand(props) {
                   </Grid>
                   {/* List of downloadable links when its selected as a option*/}
                   {/*can map this grid for the list*/}
-                  <Grid item xs={12}>
-                    <Paper className={classes.paper}>
-                      Link1
-                    </Paper>
-                  </Grid>
+                  {links&&links.length>0?(
+                    <Grid item xs={12}>
+                      <Paper className={classes.paper}>
+                        Links on: {listParent}
+                      </Paper>
+                    </Grid>
+                  ):(null)}
+                  {links&&links.length>0?(
+                    links&&links.map((item,index)=>(
+                      <Grid key={index} item xs={12}>
+                      <Paper  onClick={()=>onListItemClick(index,item)} className={classes.paperLink}>
+                        <Button>{item}</Button>
+                      </Paper>
+                    </Grid>
+                    ))
+
+                  ):(null)}
+
                 </Grid>
                 <Snackbar open={download} autoHideDuration={6000} onClose={()=>{setDownload(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
                   <MuiAlert onClose={()=>{setDownload(false)}} severity="success" elevation={6} variant="standard" color="success">
@@ -248,8 +295,12 @@ export default function RemoteCommand(props) {
                     <CircularProgress size={17} style={{display:"inline-block",verticalAlign:"middle",marginRight:"12px"}} /> Starting Download!
                   </MuiAlert>
                 </Snackbar>
+                <Snackbar open={isListing} onClose={()=>{setIsListing(false)}}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert icon={false} onClose={()=>{setIsListing(false)}}  severity="info" elevation={6} variant="standard" color="info">
+                    <CircularProgress size={17} style={{display:"inline-block",verticalAlign:"middle",marginRight:"12px"}} /> Fetching List!
+                  </MuiAlert>
+                </Snackbar>
               </Container>
-            </main>
         </div>
     );
 

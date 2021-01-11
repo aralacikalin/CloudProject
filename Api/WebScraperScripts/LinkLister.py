@@ -23,13 +23,19 @@ driver=webdriver.Chrome(executable_path= PATH, options=options)
 driver.get(link)
 time.sleep(5)
 links=driver.find_elements_by_tag_name('a')
+newLinksList=[]
+for i in range(len(links)):
+    a=links[i]
+
+    if(a.get_attribute('href')!=None):
+        newLinksList.append(a)
 
 try:
     downloadIndex=int(sys.argv[2])
     downloading=False
     dirContents=os.listdir(os.getcwd()+r"\CloudContents")
     tempDownloadName=None
-    links[downloadIndex].click()
+    newLinksList[downloadIndex].click()
     checkCount=0
 
     while(not downloading):
@@ -52,11 +58,10 @@ try:
     time.sleep(3)
     driver.quit()
 except:
-    for i in range(len(links)):
-        a=links[i]
+    for i in range(len(newLinksList)):
+        a=newLinksList[i]
 
-        if(a.get_attribute('href')!=None):
-            print(a.get_attribute('href'),",",end="") 
+        print(a.get_attribute('href'),",",end="") 
     driver.quit()
     print("OK")
 
