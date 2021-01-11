@@ -8,10 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import { Link } from 'react-router-dom';
-import { Accordion, AccordionDetails, AccordionSummary, Paper } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Avatar, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Paper } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
-
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,8 +19,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
 
+import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
+
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+
+import FolderIcon from '@material-ui/icons/Folder';
 
 const {proxy} =require("../../../package.json")
 
@@ -175,26 +178,50 @@ class CloudItem extends Component {
 
   renderCardMedia(){
     if(this.state.fileType==="img"){
-      return(
-        <CardMedia
-          className={this.classes.cardMedia}
-          component="img"
-          src={this.state.url}
-          title={this.props.item}
-        />
+      if(!this.props.isListView){//if list view is not selected this card is render
+        return(
+          <CardMedia
+            className={this.classes.cardMedia}
+            component="img"
+            src={this.state.url}
+            title={this.props.item}
+          />
+        )
+      }
+      else{
+        return(
+          <ListItemAvatar >
 
-      )
+            <Avatar src={this.state.url} />
+          </ListItemAvatar>
+        )
+      }
     }
     else if(this.state.fileType==="application/pdf"){
-      return(
-        <object width="100%" height="%100" className={this.classes.cardMediaNonImg} data={this.state.url} type="application/pdf">   </object>
-      )
+      if(!this.props.isListView){
+
+        return(
+          <object width="100%" height="%100" className={this.classes.cardMediaNonImg} data={this.state.url} type="application/pdf">   </object>
+        )
+      }
+      else{
+        return(
+          <InsertDriveFileIcon/>
+        )
+      }
 
     }
     else if (this.state.fileType==="text/plain"){
-      return(
-        <object className={this.classes.cardMediaNonImg} width="100%" height="%100" data={this.state.url} type="text/plain">   </object>
-      )
+      if(!this.props.isListView){
+        return(
+          <object className={this.classes.cardMediaNonImg} width="100%" height="%100" data={this.state.url} type="text/plain">   </object>
+        )
+      }
+      else{
+        return(
+          <InsertDriveFileIcon/>
+        )
+      }
     }
     else{
       return(null)
@@ -267,129 +294,269 @@ class CloudItem extends Component {
 
     if(!this.state.isDeleted){
 
-      return(
-        <Card className={this.classes.card}>
-          {this.renderCardMedia()}
-          <CardContent className={this.classes.cardContent}>
-            <Typography gutterBottom variant="h5" component="h2">
-              {nameWOExt}
-            </Typography>
-            <Typography >
-              <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
-              <div style={{display:"flex"}}>Type: &nbsp; {this.props.ext}</div> 
-            </Typography>
-          </CardContent>
-          {this.props.ext!=="folder"?(<CardActions>
-          <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
-  
-            <Button size="small" color="primary">
-              <GetAppIcon/>
-            </Button>
-          </a>
-          <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
-            <DeleteIcon/>
-          </Button>
-            <Button size="small" onClick={this.preventDefault} color="primary">
-              <GetAppIcon/>
-            </Button>
-  
-            <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
+      if(!this.props.isListView){
+
+        return(
+          <Card className={this.classes.card}>
+            {this.renderCardMedia()}
+            <CardContent className={this.classes.cardContent}>
+              <Typography gutterBottom variant="h5" component="h2">
+                {nameWOExt}
+              </Typography>
+              <Typography >
+                <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
+                <div style={{display:"flex"}}>Type: &nbsp; {this.props.ext}</div> 
+              </Typography>
+            </CardContent>
+            {this.props.ext!=="folder"?(<CardActions>
+            <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
+    
               <Button size="small" color="primary">
-                See File
+                <GetAppIcon/>
               </Button>
-  
             </a>
-            
-            {/* POPUPS AND ALERTS */}
+            <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
+              <DeleteIcon/>
+            </Button>
+              <Button size="small" onClick={this.preventDefault} color="primary">
+                <GetAppIcon/>
+              </Button>
+    
+              <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
+                <Button size="small" color="primary">
+                  See File
+                </Button>
+    
+              </a>
+              
+              {/* POPUPS AND ALERTS */}
+  
+              <Dialog
+                  open={this.state.isDeletePopup}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={this.handleDeletePopupCancel}
+                  aria-labelledby="alert-dialog-slide-title"
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogTitle id="alert-dialog-slide-title">{"Delete File?"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      Are you sure to delete this file?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handleDeleteFile} color="primary">
+                      Yes
+                    </Button>
+                    <Button onClick={this.handleDeletePopupCancel} color="primary">
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
+                    File Deleted Successfully
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar open={this.state.isNotDeleted} autoHideDuration={6000} onClose={this.handleDeleteFailedAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={this.handleDeleteFailedAlertClose} severity="error" elevation={6} variant="standard" color="error">
+                    File Deletion Failed!
+                  </MuiAlert>
+                </Snackbar>
+            </CardActions>):
+            (
+              /*FOLDER INSIDE CLOUD IS RENDERED HERE*/
+              <div>
+  
+                <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
+                  <DeleteIcon/>
+                </Button>
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
+                <Paper elevation={30} style={collapsableStyle}>
+                  {this.state.subContent.map(item=>(
+                  <AccordionDetails style={accordionStyle}><CloudItem refresh={this.props.refresh} isDeleted={this.props.isDeleted} item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
+                  ))}
+                </Paper>
+                {/* POPUPS AND ALERTS */}
+                <Dialog
+                  open={this.state.isDeletePopup}
+                  TransitionComponent={Transition}
+                  keepMounted
+                  onClose={this.handleDeletePopupCancel}
+                  aria-labelledby="alert-dialog-slide-title"
+                  aria-describedby="alert-dialog-slide-description"
+                >
+                  <DialogTitle id="alert-dialog-slide-title">{"Delete Folder?"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      Are you sure to delete this folder?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handleDeleteFolder} color="primary">
+                      Yes
+                    </Button>
+                    <Button onClick={this.handleDeletePopupCancel} color="primary">
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+            </Accordion>
+                <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
+                    Folder Deleted Successfully
+                  </MuiAlert>
+                </Snackbar>
+                <Snackbar open={this.state.isNotDeleted} autoHideDuration={6000} onClose={this.handleDeleteFailedAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                  <MuiAlert onClose={this.handleDeleteFailedAlertClose} severity="error" elevation={6} variant="standard" color="error">
+                    Folder Deletion Failed!
+                  </MuiAlert>
+                </Snackbar>
+              </div>
+  
+            )
+        }</Card>
+        );
+      }
+      //list view is rendered here
+      else{
+        return(
+          <Paper>
 
-            <Dialog
-                open={this.state.isDeletePopup}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={this.handleDeletePopupCancel}
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
-              >
-                <DialogTitle id="alert-dialog-slide-title">{"Delete File?"}</DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-slide-description">
-                    Are you sure to delete this file?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handleDeleteFile} color="primary">
-                    Yes
-                  </Button>
-                  <Button onClick={this.handleDeletePopupCancel} color="primary">
-                    Cancel
-                  </Button>
-                </DialogActions>
-              </Dialog>
-              <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
-                <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
-                  File Deleted Successfully
-                </MuiAlert>
-              </Snackbar>
-              <Snackbar open={this.state.isNotDeleted} autoHideDuration={6000} onClose={this.handleDeleteFailedAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
-                <MuiAlert onClose={this.handleDeleteFailedAlertClose} severity="error" elevation={6} variant="standard" color="error">
-                  File Deletion Failed!
-                </MuiAlert>
-              </Snackbar>
-          </CardActions>):
-          (
-            /*FOLDER INSIDE CLOUD IS RENDERED HERE*/
-            <div>
+            <ListItem dense >
+              
+              {this.props.ext==="folder"?(<ListItemIcon>
+                    <FolderIcon />
+                  </ListItemIcon>):(this.renderCardMedia())}
+              <CardContent >
+                <ListItemText secondary={<div >
+                  <div style={{display:"flex"}}>Size: &nbsp; {this.renderDetails()}</div>
+                  <div style={{display:"flex"}}>Type: &nbsp; {this.props.ext}</div> 
+                </div>}>
+                  {nameWOExt}
+                </ListItemText>
+                
+              </CardContent>
+              </ListItem>
 
+              {this.props.ext!=="folder"?(<CardActions>
+              <a style={{textDecoration:"none"}}  href={`${this.props.ip}download/${this.props.item}`}>
+      
+                <Button size="small" color="primary">
+                  <GetAppIcon/>
+                </Button>
+              </a>
               <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
                 <DeleteIcon/>
               </Button>
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
-              <Paper elevation={30} style={collapsableStyle}>
-                {this.state.subContent.map(item=>(
-                <AccordionDetails style={accordionStyle}><CloudItem refresh={this.props.refresh} isDeleted={this.props.isDeleted} item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
-                ))}
-              </Paper>
-              {/* POPUPS AND ALERTS */}
-              <Dialog
-                open={this.state.isDeletePopup}
-                TransitionComponent={Transition}
-                keepMounted
-                onClose={this.handleDeletePopupCancel}
-                aria-labelledby="alert-dialog-slide-title"
-                aria-describedby="alert-dialog-slide-description"
-              >
-                <DialogTitle id="alert-dialog-slide-title">{"Delete Folder?"}</DialogTitle>
-                <DialogContent>
-                  <DialogContentText id="alert-dialog-slide-description">
-                    Are you sure to delete this folder?
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handleDeleteFolder} color="primary">
-                    Yes
+              
+                <Button size="small" onClick={this.preventDefault} color="primary">
+                  <GetAppIcon/>
+                </Button>
+      
+                <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
+                  <Button size="small" color="primary">
+                    See File
                   </Button>
-                  <Button onClick={this.handleDeletePopupCancel} color="primary">
-                    Cancel
-                  </Button>
-                </DialogActions>
-              </Dialog>
-          </Accordion>
-              <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
-                <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
-                  Folder Deleted Successfully
-                </MuiAlert>
-              </Snackbar>
-              <Snackbar open={this.state.isNotDeleted} autoHideDuration={6000} onClose={this.handleDeleteFailedAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
-                <MuiAlert onClose={this.handleDeleteFailedAlertClose} severity="error" elevation={6} variant="standard" color="error">
-                  Folder Deletion Failed!
-                </MuiAlert>
-              </Snackbar>
-            </div>
-
-          )
-      }</Card>
-      );
+      
+                </a>
+                
+                {/* POPUPS AND ALERTS */}
+    
+                <Dialog
+                    open={this.state.isDeletePopup}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.handleDeletePopupCancel}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                  >
+                    <DialogTitle id="alert-dialog-slide-title">{"Delete File?"}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-slide-description">
+                        Are you sure to delete this file?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleDeleteFile} color="primary">
+                        Yes
+                      </Button>
+                      <Button onClick={this.handleDeletePopupCancel} color="primary">
+                        Cancel
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                    <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
+                      File Deleted Successfully
+                    </MuiAlert>
+                  </Snackbar>
+                  <Snackbar open={this.state.isNotDeleted} autoHideDuration={6000} onClose={this.handleDeleteFailedAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                    <MuiAlert onClose={this.handleDeleteFailedAlertClose} severity="error" elevation={6} variant="standard" color="error">
+                      File Deletion Failed!
+                    </MuiAlert>
+                  </Snackbar>
+              </CardActions>):(null)}
+              
+              {this.props.ext==="folder"?(
+                /*FOLDER INSIDE CLOUD IS RENDERED HERE*/
+                <div>
+    
+                <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
+                  <DeleteIcon/>
+                </Button>
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon/>}/>
+                  <Paper elevation={30} style={collapsableStyle}>
+                    {this.state.subContent.map(item=>(
+                    <AccordionDetails style={accordionStyle}><CloudItem isListView={this.props.isListView} refresh={this.props.refresh} isDeleted={this.props.isDeleted} item={this.props.item+"/"+item[0]}  ip={this.props.ip} size={item[1]} ext={item[2]}></CloudItem></AccordionDetails>
+                    ))}
+                  </Paper>
+                  {/* POPUPS AND ALERTS */}
+                  <Dialog
+                    open={this.state.isDeletePopup}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.handleDeletePopupCancel}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                  >
+                    <DialogTitle id="alert-dialog-slide-title">{"Delete Folder?"}</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText id="alert-dialog-slide-description">
+                        Are you sure to delete this folder?
+                      </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={this.handleDeleteFolder} color="primary">
+                        Yes
+                      </Button>
+                      <Button onClick={this.handleDeletePopupCancel} color="primary">
+                        Cancel
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+              </Accordion>
+                  <Snackbar open={this.state.isDeleteAlert} autoHideDuration={6000} onClose={this.handleDeleteConfirmationAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                    <MuiAlert onClose={this.handleDeleteConfirmationAlertClose} severity="success" elevation={6} variant="standard" color="success">
+                      Folder Deleted Successfully
+                    </MuiAlert>
+                  </Snackbar>
+                  <Snackbar open={this.state.isNotDeleted} autoHideDuration={6000} onClose={this.handleDeleteFailedAlertClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>
+                    <MuiAlert onClose={this.handleDeleteFailedAlertClose} severity="error" elevation={6} variant="standard" color="error">
+                      Folder Deletion Failed!
+                    </MuiAlert>
+                  </Snackbar>
+                </div>
+    
+              ):(null)
+              //TODO: if this is the final version of the list view delete this null and combine 2 ? statements
+          }
+          </Paper>
+        );
+      }
     }
     else{
       return(null)
