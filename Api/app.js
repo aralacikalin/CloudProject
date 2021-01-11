@@ -25,6 +25,8 @@ var torrentDownloadRouter=require("./routes/torrentDownload");
 var subFolderContentRounter=require("./routes/subFolderContent");
 var deleteItemRouter=require("./routes/deleteItem");
 var deleteFolderRouter=require("./routes/deleteFolder");
+var listLinksRounter=require("./routes/listLinks");
+var donwloadFromListRounter=require("./routes/listDownload");
 
 var app = express();
 var cors=require("cors")
@@ -61,6 +63,9 @@ app.use('/torrent', torrentDownloadRouter);
 app.use('/subcontent', subFolderContentRounter);
 app.use('/delete', deleteItemRouter);
 app.use('/deletefolder', deleteFolderRouter);
+
+app.use('/listlinks', listLinksRounter);
+app.use('/downloadlist', donwloadFromListRounter);
 
 app.use('/downloadingCount', donwloadingCountRouter);
 app.use('/login', authentication);
