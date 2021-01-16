@@ -4,6 +4,8 @@ Final project for bachelors degree. This project is a cloud server for your home
 
 ## Installation
 
+Node version 10.x.x is used to create this project and its recommended to install that in order to run the code.
+
 **Installing the required packages and running both back-end and front-end  servers;**
 
  1. Change directory to Api folder then run command;

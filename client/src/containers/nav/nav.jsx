@@ -82,7 +82,7 @@ class Nav extends Component {
                 scrollButtons="on"
                 variant="scrollable"
             >
-            <Tab label="Main" />
+            <Tab label="Home" />
             <Tab label="Cloud" />
             <Tab label="Remote" />
             <div style={{marginLeft:"auto",marginTop:"auto",marginBottom:"auto",display:"flex",flexDirection:"row"}}>
