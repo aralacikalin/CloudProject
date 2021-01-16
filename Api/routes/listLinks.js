@@ -11,11 +11,13 @@ var Role =require("../_helpers/role");
 router.post('/',authorize(Role.Admin), async function(req, res, next) { 
     var url=req.body.url
     //TODO change this to sude python for pi
-    var output =execSync(`python -u WebScraperScripts\\TorrentDownloaderFire.py ${url}`).toString()
+    var output =execSync(`python -u WebScraperScripts\\LinkLister.py ${url}`).toString()
+
 
     if(output.includes("OK")){
-        console.log(output)
-        res.sendStatus(200)
+        var links=output.split(",")
+        links.pop()
+        res.send(links)
     }
     else{
         res.sendStatus(408)

@@ -84,6 +84,7 @@ class FileInput extends Component {
       this.setState({uploadProgress:parseInt(Math.round((progressEvent.loaded*100)/progressEvent.total))})
     }}).then(()=>{
       this.setState({isUploadSnack:true,uploadProgress:0})
+      this.props.refresh()
     });
     //await fetch("/upload",{method:"POST",body:data,credentials: 'include'})
   }
