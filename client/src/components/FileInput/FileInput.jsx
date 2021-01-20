@@ -143,7 +143,7 @@ class FileInput extends Component {
                     {this.LinearProgressWithLabel()}
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" color="primary" onClick={this.handleUpload}><CloudUploadIcon/> &nbsp; Submit Files</Button>
+                    <Button variant="contained" color="primary" onClick={this.handleUpload}><CloudUploadIcon/> &nbsp; Upload</Button>
                 </Grid>
             </Grid>
             <Snackbar open={this.state.isUploadSnack} autoHideDuration={6000} onClose={this.handleSnackClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>

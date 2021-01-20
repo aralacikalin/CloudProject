@@ -19,6 +19,13 @@ class Main extends Component {
           <p>
             Welcome To cHub
           </p>
+          <div className="App-Explanation">
+            You can upload files to, download files from the storage 
+            and even command to download files from internet to the storage for later use 
+          </div>
+          <div className="App-Tip">
+            (for more information visit the pages)
+          </div>
         </header>
       </div>
     );

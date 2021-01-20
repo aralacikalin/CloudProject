@@ -205,7 +205,7 @@ export default function RemoteCommand(props) {
                     Send Download Commands
                   </Typography>
                   <Typography variant="h4" align="center" color="textPrimary" paragraph>
-                    Pick a method and provide the URL
+                    Pick a method and provide the URL then press enter on the input box
                   </Typography>
                   <Typography variant="h6" align="center" color="textSecondary" paragraph>
                     Download: Provide a URL that triggers a download

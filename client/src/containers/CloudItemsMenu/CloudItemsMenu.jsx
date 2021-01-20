@@ -133,9 +133,9 @@ class CloudItemsMenu extends Component {
                         Cloud Items
                         </Typography>
                         <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                        Something short and leading about the collection below—its contents, the creator, etc.
-                        Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-                        entirely.
+                          Here you can view the contents of the cloud storage. Files can be downloaded and deleted. 
+                          If sub folders exists within you can also view them and delete them. 
+                          For uploading files first select one or more files using upload box (either click to box for file selector or drag files) then click upload button.
                         </Typography>
                         <div className={this.classes.heroButtons}>
                         <Grid container spacing={2} justify="center">
