@@ -1,5 +1,5 @@
 
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import { ButtonBase, CssBaseline, TextField, Typography } from '@material-ui/core';
+import { CssBaseline, TextField, Typography } from '@material-ui/core';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -189,7 +189,7 @@ export default function RemoteCommand(props) {
           setIsStarting(false)
         }
         else{
-          setTorrentNotStarted(true)
+          setNotDownloading(true)
           setIsStarting(false)
         }
       })
@@ -202,22 +202,22 @@ export default function RemoteCommand(props) {
             <CssBaseline/>
                 <Container maxWidth="lg" className={classes.container}>
                   <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                        Send Download Commands
+                    Send Download Commands
                   </Typography>
                   <Typography variant="h4" align="center" color="textPrimary" paragraph>
-                      Pick a method and provide the URL
+                    Pick a method and provide the URL
                   </Typography>
                   <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                      Download: Provide a URL that triggers a download
+                    Download: Provide a URL that triggers a download
                   </Typography>
                   <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                      List: Provide a web site and all downloadable links will be listed
+                    List: Provide a web site and all downloadable links will be listed, then click the link that you want to download
                   </Typography>
                   <Typography variant="h6" align="center" color="textSecondary" paragraph>
-                      Torrent: Provide a torrent link and it will be downloaded
+                    Torrent: Provide a torrent link and it will be downloaded
                   </Typography>
                   <Typography variant="h7" align="center" color="textSecondary" paragraph>
-                      (Currently only 2 dowloads can occur at the same time!)
+                    (Currently only 2 dowloads can occur at the same time!)
                   </Typography>
                 <Grid container spacing={3}>
                   {/*Download Count*/}

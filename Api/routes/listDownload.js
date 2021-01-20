@@ -38,12 +38,12 @@ router.post('/',authorize(Role.Admin), async function(req, res, next) {
                 
                 }
             })
-            if(loopCounter>200){
-                clearInterval(loop)
-                res.sendStatus(408)
-                
-            }
         })
+        if(loopCounter>200){
+            clearInterval(loop)
+            res.sendStatus(408)
+            
+        }
 
     },300)
     // while(!isDownloading){

@@ -4,7 +4,7 @@ import Dropzone from 'react-dropzone'
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'; //TODO can use this icon
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
@@ -143,7 +143,7 @@ class FileInput extends Component {
                     {this.LinearProgressWithLabel()}
                 </Grid>
                 <Grid item>
-                    <Button variant="contained" color="primary" onClick={this.handleUpload}>Submit Files</Button>
+                    <Button variant="contained" color="primary" onClick={this.handleUpload}><CloudUploadIcon/> &nbsp; Submit Files</Button>
                 </Grid>
             </Grid>
             <Snackbar open={this.state.isUploadSnack} autoHideDuration={6000} onClose={this.handleSnackClose}  anchorOrigin={{vertical: 'bottom',horizontal: 'left',}}>

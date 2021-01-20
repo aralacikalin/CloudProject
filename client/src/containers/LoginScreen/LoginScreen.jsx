@@ -315,7 +315,6 @@ export default function LoginScreen(props) {
       if (!response.ok) {
         setOpen(true)
       } else {
-        //TODO Change the view
         setIsLoggedin(true)
         props.onLogin()
       }

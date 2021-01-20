@@ -7,7 +7,6 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import GetAppIcon from '@material-ui/icons/GetApp';
-import { Link } from 'react-router-dom';
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Paper } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -318,10 +317,6 @@ class CloudItem extends Component {
             <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
               <DeleteIcon/>
             </Button>
-              <Button size="small" onClick={this.preventDefault} color="primary">
-                <GetAppIcon/>
-              </Button>
-    
               <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
                 <Button size="small" color="primary">
                   See File
@@ -451,10 +446,6 @@ class CloudItem extends Component {
               <Button size="small" onClick={this.handleDeletePopupOpen} color="primary">
                 <DeleteIcon/>
               </Button>
-              
-                <Button size="small" onClick={this.preventDefault} color="primary">
-                  <GetAppIcon/>
-                </Button>
       
                 <a style={{textDecoration:"none"}} target="_blank" rel="noopener noreferrer" href={this.state.url}>
                   <Button size="small" color="primary">
@@ -552,7 +543,6 @@ class CloudItem extends Component {
                 </div>
     
               ):(null)
-              //TODO: if this is the final version of the list view delete this null and combine 2 ? statements
           }
           </Paper>
         );
