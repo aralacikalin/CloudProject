@@ -25,10 +25,25 @@ tempDownloadName=None
 
 
 links=driver.find_elements_by_xpath('.//a')
+isNotFound=True
 for link in links:
-    if("magnet" in link.get_attribute("href")):
-        link.click()
-        break
+    try:
+        if("magnet" in link.get_attribute("href")):
+            link.click()
+            isNotFound=False
+            break
+    except:
+        driver.quit()
+        print("NO")
+        time.sleep(2)
+        quit()
+
+if(isNotFound):
+    driver.quit()
+    print("NO")
+    time.sleep(2)
+    quit()
+
 
 time.sleep(2)
 
@@ -43,6 +58,7 @@ while(not downloading):
     if(newDirContents!=dirContents):
         downloading=True
         break
+    print(checkCount)
     if(checkCount>20):
         break
     checkCount+=1
@@ -51,8 +67,9 @@ while(not downloading):
 if(downloading):
     print("OK")
 else:
-    print("Download may not have started")
+    print("NO")
 
 
 
 driver.quit()
+quit()
