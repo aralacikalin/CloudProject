@@ -366,7 +366,7 @@ export default function LoginScreen(props) {
               onChange={event=>setpassword(event.target.value)}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" checked color="primary" onChange={event=>{setrememberme(event.target.value)}} />}
+              control={<Checkbox value="remember" checked={rememberme} color="primary" onChange={event=>{setrememberme(event.target.checked)}} />}
               label="Remember me"
             />
             <Button
