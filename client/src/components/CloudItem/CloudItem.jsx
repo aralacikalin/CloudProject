@@ -223,7 +223,14 @@ class CloudItem extends Component {
       }
     }
     else{
-      return(null)
+      if(!this.props.isListView){
+        return(null)
+      }
+      else{
+        return(
+          <InsertDriveFileIcon/>
+        )
+      }
     }
   }
 
